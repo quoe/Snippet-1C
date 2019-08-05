@@ -1,6 +1,6 @@
 ﻿{1,
-{125,
-{"КучеровРМ",1,0,"",""},
+{129,
+{"КучеровРМ (сниппеты)",1,0,"",""},
 {3,
 {"Стандартные",1,0,"",""},
 {27,
@@ -1552,7 +1552,7 @@ RegExp.Pattern 		= Шаблон;
 "}
 }
 },
-{13,
+{14,
 {"Запрос",1,0,"",""},
 {0,
 {"ВыбратьПервые",0,0,"","КоличествоВыбираемых 	= ВыбратьПервые;
@@ -1570,6 +1570,25 @@ RegExp.Pattern 		= Шаблон;
 Запрос 			= Новый Запрос;
 Запрос.Текст 	= 
 ""ВЫБРАТЬ "" + ЗапросВибиратьПервыеЗначения + """}
+},
+{0,
+{"ПодВыборка (ОбходРезультатаЗапроса.ПоГруппировкам)",0,0,"ЗапросПодвыб[орк]","Если НЕ РезультатЗапроса.Пустой() Тогда
+	лВыборка 	= РезультатЗапроса.Выбрать(ОбходРезультатаЗапроса.ПоГруппировкам);
+	Пока лВыборка.Следующий() Цикл
+		
+		лПодВыборка 	= лВыборка.Выбрать();
+		
+		Пока лПодВыборка.Следующий() Цикл
+			
+			<?>
+			
+		КонецЦикла;
+		
+	Прервать;
+		
+	КонецЦикла;
+Иначе
+КонецЕсли;"}
 },
 {0,
 {"РезультатЗапроса.Пустой Пока",0,0,"еслиРезП[ока]","Если НЕ РезультатЗапроса.Пустой() Тогда
@@ -15244,7 +15263,7 @@ https://flumi.ru/articles/show/programmnaia_rabota_s_rekvizitami_i_elementami_fo
 {"Открыть форму",0,0,"ПоказатьДок[умент]","<?""Имя документа"">.ПолучитьФорму().Открыть();"}
 }
 },
-{7,
+{12,
 {"Командная строка",1,0,"",""},
 {0,
 {"Запуск обработки",0,0,"","// Запуск обработки из командной строки Windows (для запуска через службы Windows)
@@ -15431,6 +15450,2053 @@ ObjScriptRun 		= ObjShell.Run(""Powershell.exe -windowstyle hidden -Executionpol
 	
 КонецФункции // ПолучитьСкриптPowerShell_Процессы()
 "}
+},
+{0,
+{"CMD RAR (архивы установщиком SFX по 50 мб) (можно перетащить файл на файл *.cmd)",0,0,"","@: SFX установки с частями по 50 мб
+
+@: Установка русской кодировки
+chcp 1251
+
+For %%i In (%*) Do (
+	set FileName = %%~ni_p50m
+	""C:\Program Files\WinRAR\WinRAR.exe"" a %%~ni_p50m %%i -v50m -sfx
+)"}
+},
+{0,
+{"RAR Архив Справка",0,0,"","Синтаксис командной строки
+
+WinRAR допускает управление из командной строки. Общий синтаксис командной строки таков:
+
+Bash
+WinRAR <команда> -<ключ1> -<ключN> <архив> <файлы…> <@файл-список…> <путь для извлечения\>
+
+
+команда	Комбинация символов, определяющая действие, которое будет выполнять WinRAR. См. ""Список команд WinRAR"".
+ключ	Ключи используются для определения специфических действий, степени сжатия, типа архива и пр. См. ""список ключей WinRAR"".
+архив	Имя обрабатываемого архива.
+файлы	Имена обрабатываемых файлов.
+файл-список	Файлы-списки - это обычные текстовые файлы, содержащие имена файлов для обработки. Каждое имя файла должно быть указано на отдельной строке и начинаться с первой позиции строки. В файл-список допускается помещать комментарии, признак начала комментария - символы //. Например, для архивирования файлов *.txt из папки c:\work\doc, файлов *.bmp из папки c:\work\image и всех файлов из папки c:\work\misc можно создать backup.lst, содержащий следующие строки:
+.	c:\work\doc\*.txt //резервная копия текстов
+.	c:\work\image\*.bmp //резервная копия рисунков
+.	c:\work\misc
+.	После этого для архивирования достаточно будет выполнить команду:
+.	
+Bash
+winrar a backup @backup.lst
+.
+путь для извлечения	Используется только с командами e и x и указывает папку, в которую нужно извлекать файлы. Если эта папка не существует, то она будет создана.
+
+Примечания
+
+а) Если не указаны ни файлы, ни файл-список, то подразумевается шаблон *.*, т.е. WinRAR обработает все файлы.
+
+б) Если при создании архива не указано его расширение, то WinRAR будет использовать формат архива по умолчанию, выбранный в профиле архивации по умолчанию, но если вы хотите указать тип архива явно, то это можно сделать добавлением расширения .rar или .zip к имени архива.
+
+Если при распаковке архива не указано его расширение, то WinRAR считает, что это архив .rar, т.е. маска '*' (без кавычек) означает все архивы с расширением .rar. Если требуется обработать все архивы, не имеющие в имени расширения, то нужно использовать маску '*.' (без кавычек). Маска *.* выбирает все файлы. Символы подстановки (шаблоны) можно использовать в большинстве операций, таких как извлечение, тестирование и многих других, однако при архивировании и удалении шаблоны запрещены.
+
+в) Ключи, введённые в командной строке, имеют более высокий приоритет, чем соответствующие установки в диалоговом окне конфигурации, т.е. используются параметры, заданные ключами.
+
+г) Для команд C, E, S, T, RR, K и X в имени архива допускается использовать шаблоны, поэтому одной командой можно обработать сразу нескольких архивов. Более того, если вместе с этими командами указать ключ -r, то поиск архивов будет вестись и во всех вложенных папках.
+
+д) Некоторые команды и ключи применимы только к архивам RAR, некоторые — к архивам RAR и ZIP, а некоторые — к архивам всех поддерживаемых форматов. Это зависит от возможностей, заложенных в формат архива.
+
+е) Команды и ключи не зависят от регистра символов, поэтому вы можете набирать их как строчными, так и прописными буквами.
+
+ж) Если какой-либо компонент командной строки содержит пробелы, он должен быть заключён в двойные кавычки.
+
+Примеры
+Добавить папку ""c:\latest data"" в архив Info.rar 
+Bash
+WinRAR a Info.rar ""c:\latest data""
+Распаковать архив Info.rar в папку d:\data 
+Bash
+WinRAR x Info.rar d:\data\
+Список команд
+
+A	Добавить файлы в архив
+C	Добавить архивный комментарий
+CH	Изменить параметры архива
+CV	Преобразовать архивы
+CW	Записать в файл комментарий архива
+D	Удалить файлы из архива
+E	Извлечь файлы из архива, игнорируя пути
+F	Освежить имеющиеся файлы в архиве
+I	Найти строку в архивах
+K	Заблокировать архив
+M	Переместить файлы и папки в архив
+R	Восстановить повреждённый архив
+RC	Воссоздать недостающие тома
+RN	Переименовать файлы в архиве
+RR[N]	Добавить информацию для восстановления
+RV[N]	Создать тома для восстановления
+S[имя]	Преобразовать архив в самораспаковывающийся
+S-	Удалить SFX-модуль
+T	Протестировать файлы в архиве
+U	Обновить файлы в архиве
+X	Извлечь файлы из архива с полными путями
+
+Список ключей
+
+--	Прервать дальнейший поиск ключей в командной строке
+-@[+]	Запретить [разрешить] списки файлов
+-ac	Снять атрибут ""Архивный"" после архивации или извлечения
+-ad	Добавить к пути назначения имя архива
+-af<тип>	Указать формат архива
+-ag[формат]	Добавить к имени архива текущую дату и время
+-ai	Игнорировать файловые атрибуты
+-ao	Добавить файлы с установленным атрибутом ""Архивный""
+-ap<путь>	Установить путь внутри архива
+-as	Синхронизировать содержимое архива
+-av	Добавить электронную подпись
+-av-	Запретить добавление/проверку электронной подписи
+-cfg-	Игнорировать профиль по умолчанию и переменную окружения
+-cl	Преобразовать имена файлов в нижний регистр
+-cp<имя>	Выбрать профиль упаковки
+-cu	Преобразовать имена файлов в верхний регистр
+-df	Удалить файлы после архивации
+-dh	Открывать совместно используемые файлы
+-dr	Удалить файлы в Корзину
+-ds	Не сортировать файлы при архивации
+-dw	Уничтожить (затереть) файлы после архивации
+-ed	Не добавлять пустые папки
+-en	Не добавлять блок ""Конец архива""
+-ep	Исключить пути из имён
+-ep1	Исключить из пути базовую папку
+-ep2	Сохранять полные пути файлов
+-ep3	Сохранять полные пути, включая букву диска
+-e[+]<атр>	Задать исключение или включение файлов из/в обработку по маске атрибутов
+-f	Освежить имеющиеся файлы
+-hp[пароль]	Шифровать и данные, и заголовки файлов
+-iadm	Запрашивать административный доступ для SFX-архива
+-ibck	Запустить WinRAR как фоновый процесс в системном лотке
+-ieml[.][адрес]	Отправить архив по электронной почте
+-iicon<имя>	Указать значок для SFX-модуля
+-iimg<имя>	Указать логотип для SFX-модуля
+-ilog[имя]	Записывать протокол ошибок в файл
+-inul	Не выводить сообщения об ошибках
+-ioff	Выключить компьютер
+-k	Заблокировать архив
+-kb	Сохранять на диске файлы, извлечённые с ошибками
+-log[формат][=имя]	Записывать имена в файл-протокол
+-m<n>	Установить метод сжатия
+-mc<параметры>	Указать дополнительные параметры сжатия
+-md<n>	Установить размер словаря
+-ms[список]	Указать типы файлов для архивирования без сжатия
+-mt<потоки>	Установить число потоков
+-n<файл>	Включить в обработку только указанный файл
+-n@<файл-список>	Включить в обработку только файлы, указанные в файле-списке
+-oc	Установить NTFS-атрибут ""Сжатый""
+-or	Переименовывать файлы автоматически
+-os	Сохранить потоки NTFS
+-ow	Обработать информацию о правах доступа к файлам
+-o[+,-]	Установить режим перезаписи
+-p[пароль]	Установить пароль
+-r	Обрабатывать вложенные папки
+-r-	Запретить рекурсию (обработку вложенных папок)
+-r0	Обрабатывать вложенные папки только по шаблону
+-ri	Установить приоритет и время простоя
+-rr[N]	Добавить информацию для восстановления
+-rv[N]	Создать тома для восстановления
+-s	Создать непрерывный архив
+-s<N>	Создать непрерывные группы, используя счётчик файлов
+-sc<набор символов>[объекты]	Указать набор символов (и объекты)
+-se	Создать непрерывные группы, используя расширения файлов
+-sfx[имя]	Создать самораспаковывающийся архив
+-sl<размер>	Обрабатывать файлы размером меньше указанного
+-sm<размер>	Обрабатывать файлы размером больше указанного
+-sv	Создать независимые непрерывные тома
+-sv-	Создать зависимые непрерывные тома
+-s-	Запретить создание непрерывных архивов
+-t	Протестировать файлы после архивирования
+-ta<дата>	Обрабатывать файлы, изменённые после указанной даты
+-tb<дата>	Обрабатывать файлы, изменённые до указанной даты
+-tk	Сохранять исходное время архива
+-tl	Установить время архива по самому новому файлу
+-tn<время>	Обрабатывать файлы не старее, чем указанный период времени
+-to<время>	Обрабатывать файлы более старые, чем указанный период времени
+-ts<m,c,a>	Сохранить/восстановить время файлов (модификации, создания, последнего доступа)
+-u	Обновить файлы
+-v<n>[k,b,f,m,M,g,G]	Создать многотомный архив
+-vd	Очищать сменный диск перед архивацией на него
+-ver[n]	Управление версиями файлов
+-vn	Использовать старую схему именования томов
+-vp	Делать паузу перед каждым томом
+-w<путь>	Задать папку для временных файлов
+-x<файл>	Не обрабатывать указанный файл
+-x@<файл-список>	Не обрабатывать файлы, указанные в файле-списке
+-y	Подразумевать ответ ""Да"" на все запросы
+-z<файл>	Прочитать комментарий архива из файла
+
+Коды возврата WinRAR
+
+В случае успешного окончания операции WinRAR завершает работу с нулевым (0) кодом возврата. Если код возврата отличается от нулевого, это говорит о том, что произошла какая-то ошибка.
+
+Код возврата
+Описание
+0	Операция успешно завершена.
+1	Предупреждение. Произошли некритические ошибки.
+2	Произошла критическая ошибка.
+3	Неверная контрольная сумма CRC32. Данные повреждены.
+4	Предпринята попытка изменить заблокированный архив.
+5	Произошла ошибка записи на диск.
+6	Произошла ошибка открытия файла.
+7	Ошибка при указании параметра в командной строке.
+8	Недостаточно памяти для выполнения операции.
+9	Ошибка при создании файла.
+10	Нет файлов, удовлетворяющих указанной маске, и параметров.
+255	Операция была прервана пользователем.
+
+ОФИЦИАЛЬНАЯ
+
+Console RAR manual
+
+User’s Manual
+~~~~~~~~~~~~~
+RAR 3.93 console version
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+Welcome to the RAR Archiver!
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Introduction
+~~~~~~~~~~~~
+
+RAR is a powerful tool allowing you to manage and control archive
+files. Console RAR supports archives only in RAR format, the names
+of which usually have a “.rar” extension. ZIP and other formats
+are not supported. Windows users may install GUI RAR version – WinRAR,
+which is able to process many more archive types.
+
+RAR features include:
+
+*  Highly sophisticated, original compression algorithm
+*  Special compression algorithms optimized for text, audio,
+graphics data, 32 and 64-bit Intel executables
+*  Better compression than similar tools, using ‘solid’ archiving
+*  Authenticity verification (registered version only)
+*  Self-extracting archives and volumes (SFX)
+*  Ability to recover physically damaged archives
+*  Locking, password, file order list, file security & more …
+
+Configuration file
+~~~~~~~~~~~~~~~~~~
+
+RAR for Unix reads configuration information from the file .rarrc
+in the user’s home directory (stored in HOME environment variable)
+or in /etc directory.
+
+RAR for Windows reads configuration information from the file rar.ini,
+placed in the same directory as the rar.exe file.
+
+This file may contain the following string:
+
+switches=any RAR switches, separated by spaces
+
+For example:
+
+switches=-m5 -s
+
+Environment variable
+~~~~~~~~~~~~~~~~~~~~
+
+Default parameters may be added to the RAR command line by establishing
+an environment variable “RAR”.
+
+For instance, in UNIX following lines may be added to your profile:
+
+RAR=’-s -md1024′
+export RAR
+
+RAR will use this string as default parameters in the command line and
+will create “solid” archives with 1024 KB sliding dictionary size.
+
+RAR handles options with priority as following:
+
+command line switches                   highest priority
+switches in the RAR variable            lower priority
+switches saved in configuration file    lowest priority
+
+Log file
+~~~~~~~~
+
+If the switch -ilog is specified in the command line or configuration
+file, RAR will write informational messages, concerning errors
+encountered while processing archives, into a log file. Read switch
+-ilog description for more details.
+
+The file order list for solid archiving – rarfiles.lst
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+rarfiles.lst contains a user-defined file list, which tells RAR
+the order in which to add files to a solid archive. It may contain
+file names, wildcards and special entry – $default. The default
+entry defines the place in order list for files not matched
+with other entries in this file. The comment character is ‘;’.
+
+In Windows this file should be placed in the same directory as RAR
+or in %APPDATA%\WinRAR directory, in Unix – to the user’s home directory
+or in /etc.
+
+Tips to provide improved compression and speed of operation:
+
+– similar files should be grouped together in the archive;
+– frequently accessed files should be placed at the beginning.
+
+Normally masks placed nearer to the top of list have a higher priority,
+but there is an exception from this rule. If rarfiles.lst contains such
+two masks that all files matched by one mask are also matched by another,
+that mask which matches a smaller subset of file names will have higher
+priority regardless of its position in the list. For example, if you have
+*.cpp and f*.cpp masks, f*.cpp has a higher priority, so the position of
+‘filename.cpp’ will be chosen according to ‘f*.cpp’, not ‘*.cpp’.
+
+RAR command line syntax
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Syntax
+
+RAR <command>  [ -<switches> ]  <archive>  [ <@listfiles…> ]
+[ <files…> ]  [ <path_to_extract\> ]
+
+Description
+
+Command line options (commands and switches) provide control of
+creating and managing archives with RAR. The command is a string (or a
+single letter) which commands RAR to perform a corresponding action.
+Switches are designed to modify the way RAR performs the action. Other
+parameters are archive name and files to be archived into or extracted
+from the archive.
+
+Listfiles are plain text files that contain names of files to process.
+File names should start at the first column. It is possible to
+put comments to the listfile after // characters. For example,
+you may create backup.lst containing the following strings:
+
+c:\work\doc\*.txt         //backup text documents
+c:\work\image\*.bmp       //backup pictures
+c:\work\misc
+
+and then run:
+
+rar a backup @backup.lst
+
+If you wish to read file names from stdin (standard input),
+specify the empty listfile name (just @).
+
+Win32 console RAR uses OEM (DOS) encoding in list files.
+
+You may specify both usual file names and list files in the same
+command line. If neither files nor listfiles are specified,
+then *.* is implied and RAR will process all files
+
+In a UNIX environment you need to quote wildcards to avoid them
+being expanded by shell. For example, this command will extract
+*.asm files from RAR archives in current path:
+
+rar e ‘*.rar’ ‘*.asm’
+
+Command could be any of the following:
+
+a       Add files to archive.
+
+Examples:
+
+1) add all *.hlp files from the current directory to 
+the archive help.rar:
+
+rar a help *.hlp
+
+2) archive all files from the current directory and subdirectories
+to 362000 bytes size solid, self-extracting volumes 
+and add the recovery record to each volume:
+
+rar a -r -v362 -s -sfx -rr save
+
+Because no file names are specified, all files (*) are assumed.
+
+3) as a special exception, if directory name is specified as 
+an argument and if directory name does not include file masks 
+and trailing backslashes, the entire contents of the directory
+and all subdirectories will be added to the archive even 
+if switch -r is not specified.
+
+The following command will add all files from the directory
+Bitmaps and its subdirectories to the RAR archive Pictures.rar:
+
+rar a Pictures.rar Bitmaps
+
+4) if directory name includes file masks or trailing backslashes,
+normal rules apply and you need to specify switch -r to process 
+its subdirectories.
+
+The following command will add all files from directory Bitmaps,
+but not from its subdirectories, because switch -r is not
+specified:
+
+rar a Pictures.rar Bitmaps\*
+
+c       Add archive comment. Comments are displayed while the archive is
+being processed. Comment length is limited to 62000 bytes
+
+Examples:
+
+rar c distrib.rar
+
+Also comments may be added from a file using -z[file] switch.
+The following command adds a comment from info.txt file:
+
+rar c -zinfo.txt dummy
+
+cf      Add files comment. File comments are displayed when the ‘v’
+command is given. File comment length is limited to 32767 bytes.
+
+Example:
+
+rar cf bigarch *.txt
+
+ch      Change archive parameters.
+
+This command can be used with most of archive modification
+switches to modify archive parameters. It is especially
+convenient for switches like -av, -cl, -cu, -tl, which do not
+have a dedicated command.
+
+It is not able to recompress, encrypt or decrypt archive data
+and it cannot merge or create volumes. If used without any
+switches, ‘ch’ command just copies the archive data without
+modification.
+
+Example:
+
+Set archive time to latest file:
+
+rar ch -tl files.rar
+
+cw      Write archive comment to specified file.
+
+Format of output file depends on -sc switch.
+
+If output file name is not specified, comment data will be
+sent to stdout.
+
+Examples:
+
+1) rar cw arc comment.txt
+
+2) rar cw -scuc arc unicode.txt
+
+3) rar cw arc
+
+d       Delete files from archive. Please note if the processing of this
+command results in removing all the files from the archive,
+the empty archive would removed.
+
+e       Extract files to current directory.
+
+f       Freshen files in archive. Updates those files changed since they
+were packed to the archive. This command will not add new files
+to the archive.
+
+i[i|c|h|t]=<string>
+Find string in archives.
+
+Supports following optional parameters:
+
+i – case insensitive search (default);
+
+c – case sensitive search;
+
+h – hexadecimal search;
+
+t – use ANSI, Unicode and OEM character tables (Win32 only);
+
+If no parameters are specified, it is possible to use
+the simplified command syntax i<string> instead of i=<string>
+
+It is allowed to specify ‘t’ modifier with other parameters,
+for example, ict=string performs case sensitive search
+using all mentioned above character tables.
+
+Examples:
+
+1) rar “ic=first level” -r c:\*.rar *.txt
+
+Perform case sensitive search of “first level” string
+in *.txt files in *.rar archives on the disk c:
+
+2) rar ih=f0e0aeaeab2d83e3a9 -r e:\texts
+
+Search for hex string f0 e0 ae ae ab 2d 83 e3 a9
+in rar archives in e:\texts directory.
+
+k       Lock archive. Any command which intends to change the archive
+will be ignored.
+
+Example:
+
+rar k final.rar
+
+l[t,b]  List contents of archive [technical]. Files are listed as with
+the ‘v’ command with the exception of the file path. i.e. only
+the file name is displayed. Optional technical information
+(host OS, solid flag and old version flag) is displayed
+when ‘t’ modifier is used. Modifier ‘b’ forces RAR to output
+only bare file names without any additional information.
+
+m[f]    Move to archive [files only]. Moving files and directories
+results in the files and directories being erased upon
+successful completion of the packing operation. Directories will
+not be removed if ‘f’ modifier is used and/or ‘-ed’ switch is
+applied.
+
+p       Print file to stdout.
+
+You may use this command together with -inul switch to disable
+all RAR messages and print only file data. It may be important
+when you need to send a file to stdout for use in pipes.
+
+r       Repair archive. Archive repairing is performed in two stages.
+First, the damaged archive is searched for a recovery record
+(see ‘rr’ command). If the archive contains a recovery record
+and if the portion of the damaged data is continuous and less
+than N*512 bytes, where N is number of recovery sectors placed
+into the archive, the chance of successful archive
+reconstruction is very high. When this stage has been completed,
+a new archive will be created, called fixed.arcname.rar,
+where ‘arcname’ is the original (damaged) archive name.
+
+If a broken archive does not contain a recovery record or if
+the archive is not completely recovered due to major damage, a
+second stage is performed. During this stage only the archive
+structure is reconstructed and it is impossible to recover
+files which fail the CRC validation, it is still possible,
+however, to recover undamaged files, which were inaccessible
+due to the broken archive structure. Mostly this is useful
+for non-solid archives.
+
+When the second stage is completed, the reconstructed archive
+will be saved as rebuilt.arcname.rar, where ‘arcname’ is
+the original archive name.
+
+RAR/DOS32 version uses _recover.rar and _reconst.rar instead
+of names mentioned aboves.
+
+While the recovery is in progress, RAR may prompt the user for
+assistance when a suspicious file is detected.
+
+Suspicious entry
+
+Name:  <possibly filename>
+Size:  <size>    Packed: <compressed size>
+
+Add it: Yes/No/All
+
+Answer ‘y’ to add this entry to the file rebuilt.arcname.rar.
+
+Example:
+
+rar r buggy.rar
+
+rc      Reconstruct missing and damaged volumes using recovery volumes
+(.rev files). You need to specify any existing volume
+as the archive name, for example, ‘rar rc backup.part03.rar’
+
+Read ‘rv’ command description for information about
+recovery volumes.
+
+rn      Rename archived files.
+
+The command syntax is:
+
+rar rn <arcname> <srcname1> <destname1> … <srcnameN> <destnameN>
+
+For example, the following command:
+
+rar rn data.rar readme.txt readme.bak info.txt info.bak
+
+will rename readme.txt to readme.bak and info.txt to info.bak
+in the archive data.rar.
+
+It is allowed to use wildcards in the source and destination
+names for simple name transformations like changing file
+extensions. For example:
+
+rar rn data.rar *.txt *.bak
+
+will rename all *.txt files to *.bak.
+
+RAR does not check if the destination file name is already
+present in the archive, so you need to be careful to avoid
+duplicated names. It is especially important when using
+wildcards. Such a command is potentially dangerous, because
+a wrong wildcard may corrupt all archived names.
+
+rr[N]   Add data recovery record. Optionally, redundant information
+(recovery record) may be added to an archive. This will cause
+a small increase of the archive size and helps to recover
+archived files in case of floppy disk failure or data losses of
+any other kind. A recovery record contains up to 524288 recovery
+sectors. The number of sectors may be specified directly in the
+‘rr’ command (N = 1, 2 .. 524288) or, if it is not specified by
+the user, it will be selected automatically according to the
+archive size: a size of the recovery information will be about
+1% of the total archive size, usually allowing the recovery of
+up to 0.6% of the total archive size of continuously damaged data.
+
+It is also possible to specify the recovery record size in
+percent to the archive size. Just append the percent character
+to the command parameter. For example:
+
+rar rr3% arcname
+
+Note that if you run this command from .bat or .cmd file,
+you need to use rr3%% instead of rr3%, because the command
+processor treats the single ‘%’ character as the start of
+a batch file parameter. You may also use ‘p’ instead of ‘%’,
+so ‘rr3p’ will work too.
+
+If data is damaged continuously, then each rr-sector helps to
+recover 512 bytes of damaged information. This value may be
+lower in cases of multiple damage.
+
+The size of the recovery record may be approximately determined
+by the formula <archive size>/256 + <number of recovery
+sectors>*512 bytes.
+
+rv[N]   Create recovery volumes (.rev files), which can be later
+used to reconstruct missing and damaged files in a volume
+set. This command makes sense only for multivolume archives
+and you need to specify the name of the first volume
+in the set as the archive name. For example:
+
+rar rv3 data.part01.rar
+
+This feature may be useful for backups or, for example,
+when you posted a multivolume archive to a newsgroup
+and a part of subscribers did not receive some of the files.
+Reposting recovery volumes instead of usual volumes
+may reduce the total number of files to repost.
+
+Each recovery volume is able to reconstruct one missing
+or damaged RAR volume. For example, if you have 30 volumes
+and 3 recovery volumes, you are able to reconstruct any
+3 missing volumes. If the number of .rev files is less than
+the number of missing volumes, reconstructing is impossible.
+The total number of usual and recovery volumes must not
+exceed 255.
+
+Original RAR volumes must not be modified after creating
+recovery volumes. Recovery algorithm uses data stored both
+in REV files and in RAR volumes to rebuild missing RAR volumes.
+So if you modify RAR volumes, for example, lock them, after
+creating REV files, recovery process will fail.
+
+The optional <N> parameter specifies a number of recovery
+volumes to create and must be less than the total number
+of RAR volumes in the set. You may also append a percent
+character to this parameter, in such case the number of
+creating .rev files will be equal to this percent taken
+from the total number of RAR volumes. For example:
+
+rar rv15% data.part01.rar
+
+RAR reconstructs missing and damaged volumes either when
+using ‘rc’ command or automatically, if it cannot locate
+the next volume and finds the required number of .rev files
+when unpacking.
+
+Original copies of damaged volumes are renamed to *.bad
+before reconstruction. For example, volname.part03.rar
+will be renamed to volname.part03.rar.bad.
+
+s[name] Convert archive to SFX. The archive is merged with a SFX module
+(using a module in file default.sfx or specified in the switch).
+In the Windows version default.sfx should be placed in the
+same directory as the rar.exe, in Unix – in the user’s
+home directory, in /usr/lib or /usr/local/lib.
+
+s-      Remove SFX module from the already existing SFX archive.
+RAR creates a new archive without SFX module, the original
+SFX archive is not deleted.
+
+t       Test archive files. This command performs a dummy file
+extraction, writing nothing to the output stream, in order to
+validate the specified file(s).
+
+Examples:
+
+Test archives in current directory:
+
+rar t *
+
+or for Unix:
+
+rar t ‘*’
+
+User may test archives in all sub-directories, starting
+with the current path:
+
+rar t -r *
+
+or for Unix:
+
+rar t -r ‘*’
+
+u       Update files in archive. Adds files not yet in the archive
+and updates files that have been changed since they were packed
+into the archive.
+
+v[t,b]  Verbosely list the contents of archive [technical].
+Files are listed using the format: full pathname, file comment,
+original and compressed size, compression ratio, last update
+date and time, attributes, CRC, compression method and minimum
+RAR version required to extract. Optional technical information
+(host OS, solid flag and old file version flag) is displayed
+when ‘t’ modifier is used. Modifier ‘b’ forces RAR to output
+only bare file names without any additional information.
+
+To list the contents of all archive volumes, use an asterisk
+(‘*’) in place of the archive file extension or use the ‘-v’
+switch.
+
+Example:
+
+1) list contents of system.rar archive (technical mode)
+and redirect output to file techlist.lst
+
+rar vt system >techlist.lst
+
+2) list contents of tutorial.rar archive (bare file names mode)
+
+rar vb tutorial
+
+x       Extract files with full path.
+
+Example:
+
+rar x -av- -c- dime 10cents.txt
+
+extract specified file to current path. AV check and comment
+show are disabled.
+
+Switches (used in conjunction with a command):
+
+-?      Display help on commands and switches. The same as when none
+or an illegal command line option is entered.
+
+—      Stop switches scanning
+
+This switch tells to RAR that there are no more switches
+in the command line. It could be useful, if either archive
+or file name starts from ‘-‘ character. Without ‘–‘ switch
+such a name would be treated as a switch.
+
+Example:
+
+add all files from the current directory to the solid archive
+‘-StrangeName’
+
+RAR a -s — -StrangeName
+
+-ac     Clear Archive attribute after compression or extraction
+(Windows version only).
+
+-ad     Append archive name to destination path.
+
+This option may be useful when unpacking a group of archives.
+By default RAR places files from all archives in the same
+directory, but this switch creates a separate directory
+for files unpacked from each archive.
+
+Example:
+
+rar x -ad *.rar data\
+
+RAR will create subdirectories below ‘data’ for every unpacking
+archive.
+
+-ag[format]
+Generate archive name using the current date and time.
+
+Appends the current date string to an archive name when
+creating an archive. Useful for daily backups.
+
+Format of the appending string is defined by the optional
+“format” parameter or by “YYYYMMDDHHMMSS” if this parameter
+is absent. The format string may include the following
+characters:
+
+Y   – year
+M   – month
+MMM – month name as text string (Jan, Feb, etc.)
+W   – a week number (a week starts with Monday)
+A   – day of week number (Monday is 1, Sunday – 7)
+D   – day of month
+E   – day of year
+H   – hours
+M   – minutes (treated as minutes if encountered after hours)
+S   – seconds
+N   – archive number. RAR searches for already existing archive
+with generated name and if found, increments the archive
+number until generating a unique name. ‘N’ format character
+is not supported when creating volumes.
+
+Each of format string characters listed above represents only
+one character added to archive name. For example, use WW for
+two digit week number or YYYY to define four digit year.
+
+If the first character in the format string is ‘+’, positions
+of the date string and base archive name are exchanged,
+so a date will precede an archive name.
+
+The format string may contain optional text enclosed in ‘{‘
+and ‘}’ characters. This text is inserted into archive name.
+
+All other characters are added to an archive name without
+changes.
+
+If you need to update an already existing archive, be careful
+with -ag switch. Depending on the format string and time passed
+since previous -ag use, generated and existing archive names
+may mismatch. In this case RAR will create a new archive
+instead of updating the already existing.
+
+Examples:
+
+1) use the default YYYYMMDDHHMMSS format
+
+rar a -ag backup
+
+2) use DD-MMM-YY format
+
+rar a -agDD-MMM-YY backup
+
+3) use YYYYMMDDHHMM format, place date before ‘backup’
+
+rar a -ag+YYYYMMDDHHMM backup
+
+4) use YYYY-WW-A format, include fields description
+
+rar a -agYYYY{year}-WW{week}-A{wday} backup
+
+5) use YYYYMMDD and the archive number. It allows to generate
+unique names even when YYYYMMDD format mask used more than
+once in the same day
+
+rar a -agYYYYMMDD-NN backup
+
+-ai     Ignore file attributes.
+
+If this switch is used when extracting, RAR does not set
+general file attributes stored in archive to extracted files.
+This switch preserves attributes assigned by operating system
+to a newly created file.
+
+In Windows it affects archive, system, hidden and read-only
+attributes. in Unix – user, group, and others file permissions.
+
+-ao     Add files with Archive attribute set
+(Windows version only).
+
+Example:
+
+add all disk C: files with Archive attribute set
+to the ‘f:backup’ and clear files Archive attribute
+
+rar a -r -ac -ao f:backup c:\*.*
+
+-ap     Set path inside archive. This path is merged to file
+names when adding files to an archive and removed
+from file names when extracting.
+
+For example, if you wish to add the file ‘readme.txt’
+to the directory ‘DOCS\ENG’ of archive ‘release’,
+you may run:
+
+rar a -apDOCS\ENG release readme.txt
+
+or to extract ‘ENG’ to the current directory:
+
+rar x -apDOCS release DOCS\ENG\*.*
+
+-as     Synchronize archive contents
+
+If this switch is used when archiving, those archived files
+which are not present in the list of the currently added
+files, will be deleted from the archive. It is convenient to
+use this switch in combination with -u (update) to synchronize
+contents of an archive and an archiving directory.
+
+For example, after the command:
+
+rar a -u -as backup sources\*.cpp
+
+the archive ‘backup.rar’ will contain only *.cpp files
+from directory ‘sources’, all other files will be deleted
+from the archive. It looks similar to creating a new archive,
+but with one important exception: if no files are modified
+since the last backup, the operation is performed much faster
+than the creation of a new archive.
+
+-av     Put authenticity verification (registered versions only).
+RAR will put, in every new and updated archive, information
+concerning the creator, last update time and archive name.
+
+If an archive, containing authenticity verification, is being
+modified and this switch is not specified, the authenticity
+verification information will be removed.
+
+When extracting, testing, listing or updating an archive with
+the ‘-av’ switch, RAR will perform integrity validation and
+display the message:
+
+Verifying authenticity information …
+
+In the case of successful authenticity verification, 
+message ‘Ok’, creator name and last update information will be
+displayed. In the case of authenticity verification failure,
+message ‘FAILED’ will be displayed.
+
+RAR authenticity verification can be forged and does not
+provide the same level of security as modern digital signature
+schemes based on public key infrastructure. We recommend 
+to use this RAR feature as informational only, like a special
+archive comment. Avoid it in situations, when accurate
+information about archive creator is important.
+
+In order to enable the authenticity verification feature,
+the program must be registered. Please contact your local
+distribution site or the world-wide distribution center.
+
+-av-    Disable authenticity verification checking or adding.
+
+-cfg-   Ignore configuration file and RAR environment variable.
+
+-cl     Convert file names to lower case.
+
+-cu     Convert file names to upper case.
+
+-c-     Disable comments show.
+
+-df     Delete files after archiving
+
+Move files to archive. This switch in combination with
+the command “A” performs the same action as the command “M”.
+
+-dh     Open shared files
+
+Allows to process files opened by other applications
+for writing.
+
+This switch helps if an application allowed read access
+to file, but if all types of file access are prohibited,
+the file open operation will still fail.
+
+This option could be dangerous, because it allows
+to archive a file, which at the same time is modified
+by another application, so use it carefully.
+
+-dr     Delete files to Recycle Bin
+
+Delete files after archiving and place them to Recycle Bin.
+Available in Windows version only.
+
+-ds     Do not sort files while adding to a solid archive.
+
+-dw     Wipe files after archiving
+
+Delete files after archiving. Before deleting file data
+are overwritten by zero bytes to prevent recovery of
+deleted files.
+
+-ed     Do not add empty directories
+
+This switch indicates that directory records are not to be
+stored in the created archive. When extracting such archives,
+RAR creates non-empty directories basing on paths of files
+contained in them. Information about empty directories is
+lost. All attributes of non-empty directories except a name
+(access rights, streams, etc.) will be lost as well, so use
+this switch only if you do not need to preserve such information.
+
+If -ed is used with ‘m’ command or -df switch, RAR will not
+remove empty directories.
+
+-ee     Do not process extended attributes
+
+Disables saving and restoring extended file attributes.
+Only for OS/2 versions.
+
+-en     Do not add “end of archive” block
+
+By default, RAR adds an “end of archive” block to the end of
+a new or updated archive. It allows to skip external data like
+digital signatures safely, but in some special cases it may be
+useful to disable this feature. For example, if an archive
+is transferred between two systems via an unreliable link and
+at the same time a sender adds new files to it, it may be
+important to be sure that the already received file part will
+not be modified on the other end between transfer sessions.
+
+This switch cannot be used with volumes, because the end
+of archive block contains information important for correct
+volume processing.
+
+-ep     Exclude paths from names. This switch enables files to be added
+to an archive without including the path information. This
+could, of course, result in multiple files existing in the
+archive with the same name.
+
+-ep1    Exclude base dir from names. Do not store the path entered in
+the command line.
+
+Example:
+
+all files and directories from the directory tmp will be added
+to the archive ‘test’, but the path in archived names will not
+include ‘tmp\’
+
+rar a -ep1 -r test tmp\*
+
+This is equivalent to the commands:
+
+cd tmp
+rar a -r ..\test
+cd ..
+
+-ep2    Expand paths to full. Store full file paths (except a drive
+letter and leading path separator) when archiving.
+
+-ep3    Expand paths to full including the drive letter.
+Win32 version only.
+
+This switch stores full file paths including the drive
+letter if used when archiving. Drive separators (colons)
+are replaced by underscore characters.
+
+If you use -ep3 when extracting, it will change
+underscores back to colons and create unpacked files
+in their original directories and disks. If the user
+also specified a destination path, it will be ignored.
+
+This switch can help to backup several disks to the same
+archive. For example, you may run:
+
+rar a -ep3 -r backup.rar c:\ d:\ e:\
+
+to create backup and:
+
+rar x -ep3 backup.rar
+
+to restore it.
+
+But be cautious and use -ep3 only if you are sure that
+extracting archive does not contain any malicious files.
+In other words, use it if you have created an archive yourself
+or completely trust its author. This switch allows to overwrite
+any file in any location on your computer including important
+system files and should normally be used only for the purpose
+of backup and restore.
+
+-e[+]<attr>
+Specifies file exclude or include attributes mask.
+
+<attr> is a number in the decimal, octal (with leading ‘0’)
+or hex (with leading ‘0x’) format.
+
+By default, without ‘+’ sign before <attr>, this switch
+defines the exclude mask. So if result of bitwise AND between
+<attr> and file attributes is nonzero, file would not be
+processed.
+
+If ‘+’ sign is present, it specifies the include mask.
+Only those files which have at least one attribute specified
+in the mask will be processed.
+
+In Windows version is also possible to use symbols D, S, H,
+A and R instead of a digital mask to denote directories
+and files with system, hidden, archive and read-only attributes.
+The order in which the attributes are given is not significant.
+Unix version supports D and V symbols to define directory
+and device attributes.
+
+It is allowed to specify both -e<attr> and -e+<attr>
+in the same command line.
+
+Examples:
+
+1) archive only directory names without their contents
+
+rar a -r -e+d dirs
+
+2) do not compress system and hidden files:
+
+rar a -esh files
+
+3) do not extract read-only files:
+
+rar x -er files
+
+-f      Freshen files. May be used with archive extraction or creation.
+The command string “a -f” is equivalent to the command ‘f’, you
+could also use the switch ‘-f’ with the commands ‘m’ or ‘mf’. If
+the switch ‘-f’ is used with the commands ‘x’ or ‘e’, then only
+old files would be replaced with new versions extracted from the
+archive.
+
+-hp[p]  Encrypt both file data and headers.
+
+This switch is similar to -p[p], but switch -p encrypts
+only file data and leaves other information like file names
+visible. This switch encrypts all sensitive archive areas
+including file data, file names, sizes, attributes, comments
+and other blocks, so it provides a higher security level.
+Without a password it is impossible to view even the list of
+files in archive encrypted with -hp.
+
+Example:
+
+rar a -hpfGzq5yKw secret report.txt
+
+will add the file report.txt to the encrypted archive
+secret.rar using the password ‘fGzq5yKw’
+
+-id[c,d,p,q]
+Disable messages.
+
+Switch -idc disables the copyright string.
+
+Switch -idd disables “Done” string at the end of operation.
+
+Switch -idp disables the percentage indicator.
+
+Switch -idq turns on the quiet mode, so only error messages
+and questions are displayed.
+
+It is allowed to use several modifiers at once,
+so switch -idcdp is correct.
+
+-ieml[.][addr]
+Send archive by email. Win32 version only.
+
+Attach an archive created or updated by the add command
+to email message. You need to have a MAPI compliant email
+client to use this switch (most modern email programs
+support MAPI interface).
+
+You may enter a destination email address directly
+in the switch or leave it blank. In the latter case you
+will be asked for it by your email program. It is possible
+to specify several addresses separated by commas or semicolons.
+
+If you append a dot character to -ieml, an archive will be
+deleted after it was successfully attached to an email.
+If the switch is used when creating a multivolume archive,
+every volume is attached to a separate email message.
+
+-ierr   Send all messages to stderr.
+
+-ilog[name]
+Log errors to file (registered version only).
+
+Write error messages to rar.log file. If optional ‘name’
+parameter is not specified, the log file is created
+using the following defaults:
+
+Unix:    .rarlog file in the user’s home directory;
+Windows: rar.log file in %APPDATA%\WinRAR directory;
+DOS:     rar.log file in the same directory as the rar32.exe.
+
+If ‘name’ parameter includes a file name without path,
+RAR will create the log file in default directory from
+the list above using the specified name. Include both path
+and name to ‘name’ parameter if you wish to change
+the location of log file.
+
+Example:
+
+rar a -ilogc:\log\backup.log backup d:\docs
+
+will create c:\log\backup.log log file in case of errors.
+
+-inul   Disable all messages.
+
+-ioff   Turn PC off after completing an operation. The hardware must
+support the power off feature. Win32 version only.
+
+-isnd   Enable sound.
+
+-k      Lock archive. Any command which intends to change the archive
+will be ignored.
+
+-kb     Keep broken extracted files.
+
+RAR, by default, deletes files with CRC errors after
+extraction. The switch -kb specifies that files with
+CRC errors should not be deleted.
+
+-m<n>   Set compression method:
+
+-m0   store     do not compress file when adding to archive
+-m1   fastest   use fastest method (less compressive)
+-m2   fast      use fast compression method
+-m3   normal    use normal (default) compression method
+-m4   good      use good compression method (more
+compressive, but slower)
+-m5   best      use best compression method (slightly more
+compressive, but slowest)
+
+If this switch is not specified, RAR uses -m3 method
+(normal compression).
+
+By default, RAR uses only the general compression
+algorithm in -m1 and -m2 methods, advanced algorithms
+like audio and true color processing are enabled
+only in -m3..-m5 modes, the advanced text compression
+is activated only in -m4..-m5. This default can be
+overridden using -mc switch.
+
+-mc<par>
+Set advanced compression parameters.
+
+This switch is intended mainly for benchmarking and
+experiments. In the real environment it is usually better
+to allow RAR to select optimal parameters automatically.
+Please note that improper use of this switch may lead
+to very serious performance and compression loss, so use
+it only if you clearly understand what you do.
+
+It has the following syntax:
+
+-mc[param1][:param2][module][+ or -]
+
+where <module> is the one character field denoting a part
+of the compression algorithm, which has to be configured.
+
+It may have the following values:
+
+A       – audio compression;
+C       – true color (RGB) data compression;
+D       – delta compression;
+E       – 32-bit x86 executables compression;
+I       – 64-bit Intel Itanium executables compression;
+T       – text compression.
+
+‘+’ sign at the end of switch applies the selected algorithm
+module to all processed data, ‘-‘ disables the module at all.
+If no sign is specified, RAR will choose modules automatically,
+based on data and the current compression method.
+
+Switch -mc- disables all optional modules and allows only
+the general compression algorithm.
+
+<Param1> and <Param2> are module dependent parameters
+described below.
+
+Audio compression, delta compression:
+
+<Param1> is a number of byte channels (can be 1 – 31).
+RAR splits multibyte channels to bytes, for example,
+two 16-bit audio channels are considered by RAR as four
+channels one byte each.
+
+<Param2> is ignored.
+
+32-bit x86 Intel executables compression,
+64-bit Intel Itanium executables compression,
+true color (RGB) data compression:
+
+<Param1> and <Param2> are ignored.
+
+Text compression:
+
+<Param1> is the order of PPM algorithm (can be 2 – 63).
+Usually a higher value slightly increases the compression ratio
+of redundant data, but only if enough memory is available
+to PPM. In case of lack of memory the result may be negative.
+Higher order values decrease both compression and decompression
+speed.
+
+<Param2> is memory in megabytes allocated for PPM (1-128).
+Higher values may increase the compression ratio, but note
+that PPM uses the equal memory size both to compress and
+decompress, so if you allocate too much memory when creating
+an archive, other people may have problems when decompressing
+it on a computer with less memory installed. Decompression
+will be still possible using virtual memory, but it may
+become very slow.
+
+Examples:
+
+1) switch -mc1a+ forces use of 8-bit mono audio compression
+for all data.
+
+2) switch -mc10:40t+ forces use of text compression
+algorithm for all data, sets the compression order to 10
+and allocates 40 MB memory.
+
+3) switch -mc12t sets the text compression order to 12,
+when the text compression is used, but leaves to RAR to
+decide when to use it.
+
+4) switches -mct- -mcd- disable text and delta compression.
+
+-md<n>  Select dictionary size <n> in KB. Must be 64, 128, 256, 512,
+1024, 2048 or 4096 or a letter ‘a’, ‘b’, ‘c’, ‘d’, ‘e’, ‘f’, ‘g’
+respectively.
+
+The sliding dictionary is a special memory area used by the
+compression algorithm. If the size of the file being compressed
+(or the total files size in the case of a solid archive) is
+greater than the dictionary size, then increasing the dictionary
+size will generally increase compression ratio, decrease packing
+speed and increase memory requirements.
+
+RAR can reduce the dictionary size if it is significantly
+larger than the size of the source data. It helps to reduce
+memory requirements without decreasing compression.
+
+Default sliding dictionary size is 4096 KB.
+
+Example:
+
+RAR a -s -mdd sources *.asm
+or
+RAR a -s -md512 sources *.asm
+
+Will create a solid archive using a 512 KB dictionary.
+
+-ms[list]
+Specify file types to store.
+
+Specify file types, which will be stored without compression.
+This switch may be used to store already compressed files,
+which helps to increase archiving speed without noticeable
+loss in the compression ratio.
+
+Optional <list> parameter defines the list of file extensions
+separated by semicolons. For example, -msrar;zip;jpg will
+force RAR to store without compression all RAR and ZIP
+archives and JPG images. It is also allowed to specify wildcard
+file masks in the list, so -ms*.rar;*.zip;*.jpg will work too.
+
+If <list> is not specified, -ms switch will use the default
+set of extensions, which includes the following file types:
+
+7z, ace, arj, bz2, cab, gz, jpeg, jpg, lha, lzh, mp3,
+rar, taz, tgz, z, zip
+
+-mt<threads>
+Set the number of threads. Available in Windows version only.
+
+<threads> parameter can take values from 0 to 16.
+It defines the recommended number of active threads
+for compression algorithm. If it is greater than 0,
+RAR will use the multithreaded version of compression
+algorithm providing higher speed on multiprocessor
+architectures. Real number of active threads can differ
+from the specified.
+
+If <threads> is zero, RAR will use the single threaded
+compression algorithm.
+
+Change of <threads> parameter slightly affects the compression
+ratio, so archives created with different -mt switches
+will not be exactly the same even if all other compression
+settings are equal.
+
+If -mt switch is not specified, RAR will try to detect
+the number of available processors and select the optimal
+number of threads automatically.
+
+-n<f>   Include only the specified file <f>. Wildcards may be used
+both in the name and file parts of file mask. You may specify
+the switch ‘-n’ several times.
+
+This switch does not replace usual file masks, which still
+need to be entered in the command line. It is an additional
+filter limiting processed files only to those matching
+the include mask specified in -n switch. It can help to
+reduce the command line length sometimes.
+
+For example, if you need to compress all *.txt and *.lst
+files in directories Project and Info, you can enter:
+
+rar a -r text Project\*.txt Project\*.lst Info\*.txt Info\*.lst
+
+or using the switch -n:
+
+rar a -r -n*.txt -n*.lst text Project Info
+
+-n@<lf> Include files listed in the specified list file.
+
+Similar to -n<f> switch, but reads include masks from
+the list file. If you use -n@ without the list file name
+parameter, it will read file names from stdin.
+
+Example:
+
+rar a -r -n@inclist.txt text Project Info
+
+-oc     Set NTFS Compressed attribute. Win32 version only.
+
+This switch allows to restore NTFS Compressed attribute
+when extracting files. RAR saves Compressed file attributes
+when creating an archive, but does not restore them unless
+-oc switch is specified.
+
+-ol     Save symbolic links as the link instead of the file.
+Unix version only.
+
+-or     Rename extracted files automatically if file with the same name
+already exists. Renamed file will get the name like
+‘filename(N).txt’, where ‘filename.txt’ is the original file
+name and ‘N’ is a number starting from 1 and incrementing
+if file exists.
+
+-os     Save NTFS streams. Win32 version only.
+
+This switch has meaning only for NTFS file system and allows
+to save alternative data streams associated with a file.
+It is especially important in Windows 2000, XP and newer,
+which use streams to keep some file dependent information
+like file descriptions. If you use RAR to backup your
+NTFS disks, it is recommended to specify this switch.
+
+-ow     Use this switch when archiving to save file security
+information and when extracting to restore it.
+
+Unix RAR version saves file owner and group when using
+this switch.
+
+Win32 version stores owner, group, file permissions and
+audit information, but only if you have necessary privileges
+to read them. Note that only NTFS file system supports
+file based security under Windows.
+
+-o[+|-] Set the overwrite mode. Can be used both when extracting
+and updating archived files. Following modes are available:
+
+-o           Ask before overwrite
+(default for extracting files);
+
+-o+          Overwrite all
+(default for updating archived files);
+
+-o-          Skip existing files.
+
+-p[p]   Encrypt files with the string <p> as password while archiving.
+The password is case-sensitive. If you omit the password on the
+command line, you will be prompted with message “Enter password”.
+
+Example:
+
+rar a -pmyhoney secret1 *.txt
+
+add files *.txt and encrypt them with password “myhoney”.
+
+-p-     Do not query password
+
+-r      Recurse subdirectories. May be used with commands:
+a, u, f, m, x, e, t, p, v, l, c, cf and s.
+
+When used with the commands ‘a’, ‘u’, ‘f’, ‘m’ will process
+files in all sub-directories as well as the current working
+directory.
+
+When used with the commands x, e, t, p, v, l, c, cf or s will
+process all archives in sub-directories as well as the current
+working directory.
+
+-r-     Disable recursion.
+
+Even without -r switch RAR can enable the recursion
+automatically in some situations. Switch -r- prohibits it.
+
+If you specify a directory name when archiving and if such 
+name does not include wildcards, by default RAR adds
+the directory contents even if switch -r is not specified.
+Also RAR automatically enables the recursion if disk root
+without wildcards is specified as a file mask. Switch -r- 
+disables such behavior.
+
+For example:
+
+rar a -r- arc dirname
+
+command will add only the empty ‘dirname’ directory and ignore 
+its contents. Following command:
+
+rar a -r- arc c:\
+
+will compress contents of root c: directory only and 
+will not recurse into subdirectories.
+
+-r0     Similar to -r, but when used with the commands ‘a’, ‘u’, ‘f’,
+‘m’ will recurse subdirectories only for those names, which
+include wildcard characters ‘*’ and ‘?’
+
+-ri<p>[:<s>]
+Set priority and sleep time. Available only in RAR for Windows.
+This switch regulates system load by RAR in multitasking
+environment. Possible task priority <p> values are 0 – 15.
+
+If <p> is 0, RAR uses the default task priority.
+<p> equal to 1 sets the lowest possible priority,
+15 – the highest possible.
+
+Sleep time <s> is a value from 0 to 1000 (milliseconds).
+This is a period of time that RAR gives back to the system
+after every read or write operation while compressing
+or extracting. Non-zero <s> may be useful if you need to reduce
+system load even more than can be achieved with <p> parameter.
+
+Example:
+
+execute RAR with default priority and 10 ms sleep time:
+
+rar a -ri0:10 backup *.*
+
+-rr[N]  Add a data recovery record. This switch is used when creating
+or modifying an archive to add a data recovery record to
+the archive. See the ‘rr[N]’ command description for details.
+
+-rv[N]  Create recovery volumes. This switch is used when creating
+a multivolume archive to generate recovery volumes.
+See the ‘rv[N]’ command description for details.
+
+-s      Create solid archive. Solid is a special archive type. Please
+refer to the appendix “Glossary” for further information.
+
+Example:
+
+create solid archive sources.rar with 512 KB dictionary,
+recursing all directories, starting with the current directory.
+Add only .asm files:
+
+rar a -s -md512 sources.rar *.asm -r
+
+-s<N>   Create solid groups using file count
+
+Similar to -s, but reset solid statistics after compressing
+<N> files. Usually decreases compression, but also
+decreases losses in case of solid archive damages.
+
+-sc<charset>[objects]
+Specify the character set for list files and archive
+comment files.
+
+‘Charset’ parameter is mandatory and can have one
+of the following values:
+
+U – Unicode;
+A – ANSI (Windows) encoding. Windows version only;
+O – OEM (DOS) encoding. Windows version only.
+
+Files in Unicode format must have FFFE or FEFF Unicode
+character in the beginning, otherwise RAR will ignore
+this switch and process the file as ASCII text.
+
+‘Objects’ parameter is optional and can have one of
+the following values:
+
+L – list files;
+C – comment files.
+
+It is allowed to specify more than one object, for example,
+-scolc. If ‘objects’ parameter is missing, ‘charset’ is applied
+to all objects.
+
+This switch allows to specify the character set for files
+in -z[file] switch, list files and comment files written by
+“cw” command.
+
+Examples:
+
+1) rar a -scol data @list
+
+Read names contained in ‘list’ using OEM encoding.
+
+2) rar c -scuc -zcomment.txt data
+
+Read comment.txt as Unicode file.
+
+3) rar cw -scuc data comment.txt
+
+Write comment.txt as Unicode file.
+
+-se     Create solid groups using extension
+
+Similar to -s, but reset solid statistics if file extension
+is changed. Usually decreases compression, but also
+decreases losses from solid archive damages.
+
+-sfx[name]
+Create SFX archives. If this switch is used when creating a new
+archive, a Self-Extracting archive (using a module in file
+default.sfx or specified in the switch) would be created.
+In the Windows version default.sfx should be placed in the
+same directory as the rar.exe, in Unix – in the user’s
+home directory, in /usr/lib or /usr/local/lib.
+
+Example:
+
+rar a -sfxwincon.sfx myinst
+
+create SelF-eXtracting (SFX) archive using wincon.sfx
+SFX-module.
+
+-si[name]
+Read data from stdin (standard input), when creating
+an archive. Optional ‘name’ parameter allows to specify
+a file name of compressed stdin data in the created
+archive. If this parameter is missing, the name will be
+set to ‘stdin’. This switch cannot be used with -v.
+
+Example:
+
+type Tree.Far | rar a -siTree.Far tree.rar
+
+will compress ‘type Tree.Far’ output as ‘Tree.Far’ file.
+
+-sl<size>
+Process only those files, which size is less than
+specified in <size> parameter of this switch.
+Parameter <size> must be specified in bytes.
+
+-sm<size>
+Process only those files, which size is more than
+specified in <size> parameter of this switch.
+Parameter <size> must be specified in bytes.
+
+-sv     Create independent solid volumes
+
+By default RAR tries to reset solid statistics as soon
+as possible when starting a new volume, but only 
+if enough data was packed after a previous reset
+(at least a few megabytes).
+
+This switch forces RAR to ignore packed data size and attempt
+to reset statistics for volumes of any size. It decreases
+compression, but increases chances to extract a part of data 
+if one of several solid volumes in a volume set was lost
+or damaged.
+
+Note that sometimes RAR cannot reset statistics even
+using this switch. For example, it cannot be done when 
+compressing one large file split between several volumes.
+RAR is able to reset solid statistics only between separate 
+files, but not inside of single file.
+
+Ignored if used when creating a non-volume archive.
+
+-sv-    Create dependent solid volumes
+
+Disables to reset solid statistics between volumes.
+
+It slightly increases compression, but significantly reduces 
+chances to extract a part of data if one of several solid
+volumes in a volume set was lost or damaged.
+
+Ignored if used when creating a non-volume archive.
+
+-s-     Disable solid archiving
+
+-t      Test files after archiving. This switch is especially
+useful in combination with the move command, so files will be
+deleted only if the archive had been successfully tested.
+
+-ta<date>
+Process only files modified after the specified date.
+
+Format of the date string is YYYYMMDDHHMMSS.
+It is allowed to insert separators like ‘-‘ or ‘:’ to
+the date string and omit trailing fields. For example,
+the following switch is correct: -ta2001-11-20
+Internally it will be expanded to -ta20011120000000
+and treated as “files modified after 0 hour 0 minutes
+0 seconds of 20 November 2001″.
+
+-tb<date>
+Process only files modified before the specified date.
+Format of the switch is the same as -ta<date>.
+
+-tk     Keep original archive date. Prevents RAR from modifying the
+archive date when changing an archive.
+
+-tl     Set archive time to newest file. Forces RAR to set the date of a
+changed archive to the date of the newest file in the archive.
+
+-tn<time>
+Process files newer than the specified time period. Format
+of the time string is:
+
+[<ndays>d][<nhours>h][<nminutes>m][<nseconds>s]
+
+For example, use switch -tn15d to process files newer
+than 15 days and -tn2h30m to process files newer than
+2 hours 30 minutes.
+
+-to<time>
+Process files older than the specified time period. Format
+of the switch is the same as -tn<time>.
+
+-ts<m,c,a>[N]
+Save or restore file time (modification, creation, access).
+
+Switch -tsm instructs RAR to save file modification time,
+-tsc – creation time and tsa – last access time. Optional
+parameter after the switch is the number between 0 and 4
+controlling the file time precision. Value ‘1’ enables
+1 second precision, 2 – 0.0065536 sec, 3 – 0.0000256 sec and
+4 or ‘+’ enables the maximum NTFS time precision, which is
+equal to 0.0000001 sec. Value ‘0’ or ‘-‘ means that creation
+and access time are not saved and low (two seconds) precision
+is used for modification time. Higher precision modes add
+more data to archive, up to 19 additional bytes per file
+in case of -tsm4 -tsa4 -tsc4 combination. If no precision
+is specified, RAR uses ‘4’ (high) value.
+
+Default RAR mode is -tsm4 -tsc0 -tsa0, so modification time
+is stored with the high precision and other times are ignored.
+
+It is necessary to specify -tsc and -tsa switches to set
+creation and access time when unpacking files (precision
+is irrelevant, but must not be 0). By default RAR sets
+only the modification time, even if archive contains
+creation and last access time. Setting the modification
+time to unpacked files may be also disabled with -tsm-.
+
+It is possible to omit the time type letter if you need
+to apply the switch to all three times. For example,
+-tsm4 -tsa4 -tsc4 can be replaced by -ts4, -ts+ or -ts.
+Use -ts- to save only the low precision modification time
+or to ignore all three file times on unpacking.
+
+When creating an archive, RAR automatically reduces
+the precision if high mode is not supported by the file
+system. It is not more than 2 seconds on FAT and 1 second
+in Unix. NTFS time precision is 0.0000001 second.
+
+Operating systems limit which time can be set on unpacking.
+Windows allows to set all three times, Unix – modification
+and last access, but not creation, DOS supports only
+the modification time.
+
+Examples:
+
+1) rar a -ts backup
+
+Store all file times with the highest possible precision.
+
+2) rar x -tsa backup
+
+Restore modification and last access time. Switch -tsm
+is not required, because RAR uses it by default.
+
+3) rar a -tsm1 -tsc1 backup
+
+Store low precision modification and creation time.
+Without -tsm1 RAR would save the high precision modification
+time.
+
+-u      Update files. May be used with archive extraction or creation.
+The command string “a -u” is equivalent to the command ‘u’, you
+could also use the switch ‘-u’ with the commands ‘m’ or ‘mf’. If
+the switch ‘-u’ is used with the commands ‘x’ or ‘e’, then files
+not present on the disk and files newer than their copies on the
+disk would extracted from the archive.
+
+-v      Create volumes with size autodetection or list all volumes
+
+This switch may be used when creating or listing volumes.
+
+In the first case it enables volume size autodetection,
+so new volumes will use all available space on the destination
+media. It is convenient when creating volumes on removable
+disks. You may read more about volumes in -v<size> description.
+
+In the second case, when this switch is used together with
+‘V’ or ‘L’ command, it forces RAR to list contents of all
+volumes starting from that specified in the command line.
+Without this switch RAR displays contents of only one single
+specified volume.
+
+-v<size>[k|b|f|m|M|g|G]
+Create volumes with size=<size>*1000 [*1024 | *1].
+By default this switch uses <size> as thousands (1000) of bytes
+(not 1024 x bytes). You may also enter the size in kilobytes
+using the symbol ‘k’, in bytes using the symbol ‘b’,
+megabytes – ‘m’, millions of bytes – ‘M’, gigabytes – ‘g’,
+billions (milliards) of bytes – ‘G’ or select one of several
+predefined values using the symbol ‘f’ following the numerical
+value. Predefined values can be 360, 720, 1200, 1440 or 2880
+and replaced with corresponding floppy disk size.
+
+If the size is omitted, autodetection will be used.
+
+You may specify several -v switches to set different sizes
+for different volumes. For example:
+
+rar a -v100k -v200k -v300k arcname
+
+sets 100 KB size for first volume, 200 KB for second
+and 300 KB for all following volumes.
+
+If volumes are created on removable media, then after
+the creation of the first volume, the user will be prompted
+with:
+
+Create next volume: Yes/No/All
+
+At this moment in time, you should change the disks. Answering
+‘A’ will cause all volumes to be created without a pause.
+
+By default RAR volumes have names like ‘volname.partNNN.rar’,
+where NNN is the volume number. Using -vn switch it is 
+possible to switch to another, extension based naming scheme,
+where the first volume file in a multi-volume set has
+the extension .rar, following volumes are numbered from .r00
+to .r99.
+
+When extracting or testing a multi-volume archive you must use
+only the first volume name. If there is no next volume
+on the drive and the disk is removable, the user will be
+prompted with:
+
+Insert disk with <next volume name>
+
+Insert the disk with the correct volume and press any key.
+
+If while extracting, the next volume is not found and volumes
+are placed on the non-removable disk, RAR will abort with
+the error message:
+
+Cannot find <volume name>
+
+Archive volumes may not be modified. The commands ‘d’, ‘f’, ‘u’,
+‘s’ cannot be used with Multi-volume sets. The command ‘a’ may
+be used only for the creation of a new multi-volume sequence.
+
+It is possible, although unlikely, that the file size, of a file
+in a multi-volume set, could be greater than its uncompressed
+size. This is due to the fact that ‘storing’ (no compression if
+size increases) cannot be enabled for multi-volume sets.
+
+Archive volumes may be Self-Extracting (SFX). Such an archive
+should be created using both the ‘-v’ and ‘-sfx’ switches.
+
+Example:
+
+create archive in volumes of fixed size:
+
+rar a -s -v1440 floparch.rar *.*
+
+will create solid volumes of size 1440000 bytes.
+
+-vd     Erase disk contents before creating volume
+
+All files and directories on the target disk will be erased
+when ‘-vd’ is used.  The switch applies only to removable
+media, the hard disk cannot be erased using this switch.
+
+-ver[n] File version control
+
+Forces RAR to keep previous file versions when updating
+files in the already existing archive. Old versions are
+renamed to ‘filename;n’, where ‘n’ is the version number.
+
+By default, when unpacking an archive without the switch
+-ver, RAR extracts only the last added file version, the name
+of which does not include a numeric suffix. But if you specify
+a file name exactly, including a version, it will be also
+unpacked. For example, ‘rar x arcname’ will unpack only
+last versions, when ‘rar x arcname file.txt;5’ will unpack
+‘file.txt;5’, if it is present in the archive.
+
+If you specify -ver switch without a parameter when unpacking,
+RAR will extract all versions of all files that match
+the entered file mask. In this case a version number is
+not removed from unpacked file names. You may also extract
+a concrete file version specifying its number as -ver parameter.
+It will tell RAR to unpack only this version and remove
+a version number from file names. For example,
+‘rar x -ver5 arcname’ will unpack only 5th file versions.
+
+If you specify ‘n’ parameter when archiving, it will limit
+the maximum number of file versions stored in the archive.
+Old file versions exceeding this threshold will be removed.
+
+-vn     Use the old style volume naming scheme
+
+By default RAR volumes have names like ‘volname.partNNN.rar’,
+where NNN is the volume number. Using -vn switch it is 
+possible to switch to another, extension based naming scheme,
+where the first volume file in a multi-volume set has
+the extension .rar, following volumes are numbered from .r00
+to .r99. It may have sense, if you are going to unpack
+an archive under the plain MS DOS, which does not allow
+more than one dot in a file name.
+
+-vp     Pause before each volume
+
+By default RAR asks for confirmation before creating or 
+unpacking next volume only for removable drives.
+This switch forces RAR to ask such confirmation always.
+It can be useful if disk space is limited and you wish
+to copy each volume to another media immediately after
+creation.
+
+-w<p>   Assign work directory as <p>. This switch may be used to assign
+the directory for temporary files.
+
+-x<f>   Exclude specified file <f>, wildcards may be used both
+in the name and file parts of file mask. You may specify
+the switch ‘-x’ several times.
+
+If mask contains wildcards, it applies to current directory
+and its subdirectories. It is not recursive without wildcards,
+so if you wish to exclude some “filename” in all directories,
+you need to specify two masks: “filename” for current directory
+and “*\filename” for subdirectories. If you know an exact path
+to file, you can use “path\filename” syntax to exclude only
+this copy of “filename”. If you use -xpath\filename syntax
+when unpacking an archive, “path” must be a path inside of
+archive, not a file path on the disk after unpacking.
+
+Examples:
+
+1) rar a -r -x*.bak -x*.rar rawfiles
+
+*.bak and *.rar files will not be added to rawfiles
+
+2) rar a -r -x*\temp -x*\temp\* savec c:\*
+
+compress all files on the disk c: except temp directories
+and files inside of temp directories
+
+3) rar x -x*.txt docs
+
+extract all files except *.txt from docs.rar
+
+-x@<lf> Exclude files listed in the specified list file. If you use -x@
+without the list file name parameter, it will read file names
+from stdin.
+
+Example:
+
+rar a -x@exlist.txt arch *.exe
+
+-y      Assume Yes on all queries.
+
+-z[f]   Read archive comment from file <f>. Use with -sc switch
+if you need to specify the character set for comment text file.
+If <f> is not specified, comment is read from stdin.
+
+Limitations
+~~~~~~~~~~~
+
+Pathname is limited to 259 symbols.
+
+Maximum archive comment length is 62000 bytes.
+
+Command limitations:
+
+The commands ‘d’,’u’,’f’,’c’,’cf’ will not operate with archive
+volumes.
+
+The command ‘a’ cannot be used to update an archive volume, only to
+create a new one.
+
+Exit values
+~~~~~~~~~~~
+
+RAR exits with a zero code (0) in case of successful operation. The exit
+code of non-zero means the operation was cancelled due to an error:
+
+255   USER BREAK       User stopped the process
+
+9   CREATE ERROR     Create file error
+
+8   MEMORY ERROR     Not enough memory for operation
+
+7   USER ERROR       Command line option error
+
+6   OPEN ERROR       Open file error
+
+5   WRITE ERROR      Write to disk error
+
+4   LOCKED ARCHIVE   Attempt to modify an archive previously locked
+by the ‘k’ command
+
+3   CRC ERROR        A CRC error occurred when unpacking
+
+2   FATAL ERROR      A fatal error occurred
+
+1   WARNING          Non fatal error(s) occurred
+
+0   SUCCESS          Successful operation
+
+Glossary
+~~~~~~~~
+
+Archive      Special file containing one or more files optionally
+compressed and/or encrypted.
+
+Compression  A method of encoding data to reduce it’s size.
+
+CRC          Cyclic Redundancy Check. Mathematical method calculating
+special checking information for data validity.
+
+SFX          Archive module used to extract files from when executed.
+(SelF-eXtracting module), usually in the form of a .EXE
+file.
+
+Solid        An archive packed using a special compression method which
+sees all files as one continuous data stream. Particularly
+advantageous when packing a large number of small files.
+
+Volume       Part of a split archive. Splitting an archive to volumes
+allows storing them on diskettes. Solid volumes must be
+extracted starting from first in sequence.
+
+Copyrights
+
+(c) 1993-2010 Alexander Roshal"}
+},
+{0,
+{"CMD параметры (так же перетаскиванием файла)",0,0,"","@: Установка русской кодировки
+chcp 1251
+
+For %%i In (%*) Do (
+	rem здесь, вместо Echo, вставить Ваше ""конвертирование""
+	@Echo %%i
+	@Echo %%~ni
+)
+Pause"}
+},
+{0,
+{"Добавить собственный ярлык на программу в меню ""Отправить""",0,0,"","Чтобы добавить собственный ярлык на программу в меню ""Отправить"",
+
+в Пуск – Поиск введите shell:sendto. Откроется папка SendTo, содержащая ярлыки меню ""Отправить"".
+создайте здесь ярлык к программе, в которой вы хотите открывать файлы.
+
+В Файле параметры для указания файла:
+For %%i In (%*) Do (
+	rem здесь, вместо Echo, вставить Ваше ""конвертирование""
+	@Echo %%i
+	@Echo %%~ni
+)"}
+},
+{0,
+{"CMD кодировать/декодировать файл в base64 (через certutil)",0,0,"","Кодировать:
+certutil -encode raw.txt encoded.txt
+или
+certutil -f -encode raw.txt encoded.txt
+
+Декодировать:
+certutil -decode encoded.txt raw.txt"}
 }
 },
 {2,
@@ -21422,7 +23488,7 @@ http://qa.erpstat.ru/public/00052.html
 КонецФункции "}
 }
 },
-{6,
+{7,
 {"Внешняя навигационная ссылка",1,0,"",""},
 {0,
 {"Типовое",0,0,"","ОбщегоНазначения.АдресПубликацииИнформационнойБазыВЛокальнойСети() + ""/#"" + ПолучитьНавигационнуюСсылку(Документ)"}
@@ -21482,6 +23548,21 @@ http://qa.erpstat.ru/public/00052.html
 ОписаниеЗадания 			= СозданоИзДокумента + ""Описание:"" + Символы.ПС;
 
 // Не получается так: ПолучитьПолнуюНавигационнуюСсылку + Символы.ПС"}
+},
+{0,
+{"ПолучитьСсылкуИзНавигационной",0,0,"","Функция ПолучитьСсылкуИзНавигационной(НС)
+    
+    ПерваяТочка 	= Найти(НС, ""e1cib/data/"");
+    ВтораяТочка 	= Найти(НС, ""?ref="");
+    
+    ПредставлениеТипа   = Сред(НС, ПерваяТочка + 11, ВтораяТочка - ПерваяТочка - 11);
+    ШаблонЗначения 	= ЗначениеВСтрокуВнутр(ПредопределенноеЗначение(ПредставлениеТипа + "".ПустаяСсылка""));
+    ЗначениеСсылки 	= СтрЗаменить(ШаблонЗначения, ""00000000000000000000000000000000"", Сред(НС, ВтораяТочка + 5));
+    Ссылка 			= ЗначениеИзСтрокиВнутр(ЗначениеСсылки);
+	
+	Возврат Ссылка;
+	
+КонецФункции"}
 }
 },
 {1,
@@ -21569,10 +23650,16 @@ http://qa.erpstat.ru/public/00052.html
 {"WebЦвета.СветлоЗолотистый",0,0,"ВЦЖ","WebЦвета.СветлоЗолотистый"}
 }
 },
-{49,
+{55,
 {"ТОП",1,0,"",""},
 {0,
 {"Быстрое присваивание левой части правой (для присвоения названия с точками) (==)",0,0,"==","л<?""Введите текст присвоения""> 	= <?""Введите текст присвоения"">;"}
+},
+{0,
+{"Быстрое присваивание левой части правой (для присвоения названия с точками) (2 табуляции == )",0,0,"==	","л<?""Введите текст присвоения""> 		= <?""Введите текст присвоения"">;"}
+},
+{0,
+{"Быстрое присваивание левой части правой (для присвоения названия с точками) (3 табуляции == )",0,0,"==		","л<?""Введите текст присвоения""> 			= <?""Введите текст присвоения"">;"}
 },
 {0,
 {"Быстрое присваивание левой части правой = ЗначениеЗаполнено",0,0,"==З","лЕсть<?""Введите текст присвоения""> 	= ЗначениеЗаполнено(<?""Введите текст присвоения"">); "}
@@ -21684,6 +23771,26 @@ http://qa.erpstat.ru/public/00052.html
 {0,
 {"Если Параметры.Свойство",0,0,"ЕслиП[араметр]","Если Параметры.Свойство(""<?""ИмяСвойства"">"") Тогда
 	лПараметр<?""ИмяСвойства""> = Параметры.<?""ИмяСвойства"">;
+КонецЕсли;"}
+},
+{0,
+{"Если >  (Больше)",0,0,"ЕслиБ","Если <?""Имя элемента""> > <?> Тогда
+	<?>
+КонецЕсли;"}
+},
+{0,
+{"Если > 0 (БольшеНуля)",0,0,"ЕслиБН","Если <?""Имя элемента""> > 0 Тогда
+	<?>
+КонецЕсли;"}
+},
+{0,
+{"Если <  (Меньше)",0,0,"ЕслиМ","Если <?""Имя элемента""> < <?> Тогда
+	<?>
+КонецЕсли;"}
+},
+{0,
+{"Если < 0 (МеньшеНуля)",0,0,"ЕслиМН","Если <?""Имя элемента""> < 0 Тогда
+	<?>
 КонецЕсли;"}
 },
 {0,
@@ -33469,10 +35576,666 @@ WSHShell 	= Неопределено;"}
 	
 КонецФункции "}
 },
+{1,
+{"График",1,0,"",""},
+{0,
+{"Точки на графике",0,0,"","ВыводитьТочек 	= 5; 
+ВсегоТочек 		= График.Точки.Количество();
+Шаг 			= Цел(ВсегоТочек/ВыводитьТочек);
+
+//текст точки с индексом 0 надо очистить отдельно, если нужно
+
+Для Точка = 1 По ВсегоТочек-1 Цикл 
+	Если Цел(Точка / Шаг) * Шаг <> Точка Тогда
+		График.Точки[Точка].Текст 	= """";
+	КонецЕсли;	
+КонецЦикла;	"}
+}
+},
 {0,
 {"Замена в запросе",0,0,"","Запрос.ТекстЗапроса 	= СтрЗаменить(Запрос.ТекстЗапроса, ""<?""Строка в запросе для замены (вида, Список.Ссылка КАК Ссылка,)"">"",
 """"<?""Строка в запросе для замены (вида, Список.Ссылка КАК Ссылка,)"">""
 |	""<?""Строка в запросе для замены (вида, Список.Ссылка КАК Ссылка,)"">""1"");"}
+},
+{0,
+{"Правила доработки типовых конфигураций 1С для облегчения их дальнейшего обновления (часть 1)",0,0,"","Правила доработки типовых конфигураций 1С для облегчения их дальнейшего обновления (часть 1)
+http://tavalik.ru/pravila-razrabotki-chast-1/
+Опубликовано 26.07.2016 автором Виталий Онянов
+Logo_1c_8_Razradotka
+
+Почти все проекты почти в любой крупной компании-интеграторе 1С заключаются в доработке типовых конфигураций и направлены, в основном, на оптимизацию учета хозяйственной деятельности организации и сдачи соответственной регламентированной отчетности. А это, в свою очередь означает, что в дальнейшем внедряемые решения необходимо будет дорабатывать в соответствии с часто меняющимся законодательством. На практике это почти всегда означает обновление релизов типовых конфигураций, на основе которых выполнялось решение, и адаптация уже выполненных модификаций в соответствии с изменениями очередного релиза.
+
+Часто проект нельзя назвать вполне успешным, если клиент не остался в организации-интеграторе на поддержке. И если придерживаться строгих правил изменения типовых конфигураций, то потратив совсем незначительное время на этапе разработки, можно сэкономить много-много часов и нервов в будущем на постоянном обновлении измененной конфигурации. И наоборот, грубое, «наплевательское» отношение к оформлению кода, выбор более быстрых и простых, а не правильных способов реализации задач могут превратить обновление получившейся конфигурации в настоящий ад для поддержки. В дальнейшем это выльется в огромные часы обновления, резкую загруженность разработчиков в отчетный период, большое количество ошибок после обновления, недовольство клиентов и т. д.
+
+Ниже представлен набор правил разработки в типовых конфигурациях, который позволит значительно облегчить дальнейшее обновление конфигурации. Данный свод родился постепенно из многолетнего опыта большого числа разработчиков одной замечательной компании, и, по моему глубочайшему убеждению, должен быть обязательным для всех разработчиков, независимо от того, в каком отделе / проекте / направлении они работают.
+
+
+0. Оглавление списка правил разработки:
+Концепция минимизации «разрушений» типовой конфигурации
+Комментирование изменений кода
+Вставка кода
+Удаление кода
+Изменение существующего кода
+Добавление процедур и функций в модуле
+Добавление объектов верхнего уровня
+Добавление подчиненных объектов
+В типовые объекты конфигурации
+В объекты, добавленных в рамках проекта
+Добавление предопределенных элементов
+В типовые объекты конфигурации
+В объекты, добавленных в рамках проекта
+Использование общих модулей и их строгая структура
+Использование подписок и их строгая структура
+Редактирование форм
+Типовых объектов
+Объектов, добавленных в рамках проекта
+Принципы работы с ролями
+Внешние отчеты и обработки
+1. Концепция минимизации «разрушений» типовой конфигурации
+Если модифицируемую типовую конфигурацию предполагается обновлять по мере выпуска новых релизов, то разработчикам следует всегда помнить об этом и принимать меры по облегчению обновления. Следует всегда выбирать те способы решения задач, которые обеспечат более простое обновление конфигурации в будущем, даже если они несколько сложнее в реализации. Конечно, только при условии, что у более удобного для обновления способа нет серьёзных недостатков в области производительности, понятности кода и т. д.
+
+2. Комментирование изменений кода:
+Абсолютно все изменения программного кода модулей должны комментироваться. Блок строк, подвергшийся изменению, должен быть обрамлён строками-комментариями особого формата. Принцип формирования этих строк показан на примере:
+
+//++ VION 20.07.2016 0001234 Доработка на старте
+//-- VION 20.07.2016
+Где
+
+//++ — начало блока
+//— — конец блока
+VION — имя (или ник) разработчика
+0001234 — номер задачи по трекеру, ставится только в открывающем комментарии, чтобы в результаты глобального поиска по номеру задачи каждое изменение кода попадало только один раз
+Доработка на старте — произвольный комментарий, используется при необходимости, но если номер задачи отсутствует, то краткий пояснительный текст обязателен
+Комментарии призваны выделять модификации по сравнению с типовым функционалом. Если разработчик изменяет текст своей собственной модификации через некоторое время в рамках этой же задачи, то такие изменения отдельно не комментируются (и имеющийся внешний комментарий тоже не изменяется). Если разработчик вносит изменения в свой текст, но уже по другой задаче или изменяется код, написанный другим разработчиком, то комментирование следует использовать обязательно.
+
+Обрамляющие комментарии выравниваются по левому краю редактируемого блока кода. Способы использования комментирования изменений продемонстрированы на примерах ниже:
+
+2.1 Вставка кода
+Пример:
+
+Процедура ПриОткрытии()
+    Если ЭтоНовый() Тогда
+        ЗаполнитьПоляПоУмолчанию();
+    КонецЕсли;
+    НастроитьЭлементыФормы();
+    //++ VION 20.07.2016 0001234
+    НастроитьДополнительныеЭлементы();
+    //-- VION 20.07.2016
+    УстановитьВидимостьПолей();
+КонецПроцедуры
+2.2 Удаление кода
+Пример:
+
+Процедура ПриОткрытии()
+    //++ VION 20.07.2016 0001234
+    //Если ЭтоНовый() Тогда
+    //    ЗаполнитьПоляПоУмолчанию();
+    //КонецЕсли;
+    НастроитьДополнительныеЭлементы();
+    //-- VION 20.07.2016
+    УстановитьВидимостьПолей();
+КонецПроцедуры
+2.3 Изменение существующего кода
+При изменении существующего кода сначала обязательно комментируется старый блок, затем пишется новый вариант.
+
+Пример:
+
+Процедура ПриОткрытии()
+    Если ЭтоНовый() Тогда
+        //++ VION 20.07.2016 000123
+        //ЗаполнитьПоляПоУмолчанию();
+        НастройкаЗаполненияПолей = ПолучитьНастройкуЗаполненияПолей();
+        ЗаполнитьПоляПоУмолчаниюРасширенная(НастройкаЗаполненияПолей);
+        //-- VION 20.07.2016
+    КонецЕсли;
+    НастроитьЭлементыФормы();
+    УстановитьВидимостьПолей();
+КонецПроцедуры
+2.4 Добавление процедур и функций в модуле
+Для добавляемых процедур и функций, а также для объявления переменных модуля типовых объектов действуют дополнительные правила оформления комментариев:
+
+Комментируется не блок добавленных процедур в целом, а каждая добавленная процедура или функция в отдельности.
+Открывающий комментарий идёт на строке, предшествующей заголовку процедуры или функции, а закрывающий комментарий идёт на той же строке, где написано «Конец процедуры» или «Конец процедуры», через пробел.
+Комментирование изменений внутри существующих процедур осуществляется по общим правилам.
+Пример:
+
+//++ VION 20.07.2016 000123
+Перем мНастройкаЗаполненияПолей; //-- VION 20.07.2016
+
+//++ VION 20.07.2016 000123
+Процедура ДоработатьФормуПрограммно()
+    ...
+    ...
+КонецПроцедуры //-- VION 20.07.2016
+
+//++ VION 20.07.2016 000123
+Процедура ДатаОтгрузкиОбработкаВыбора()
+    ...
+    ...
+КонецПроцедуры //-- VION 20.07.2016
+Данное правило позволяет легко переносить изменения в модуле в «попроцедурном сравнении» конфигураций.
+
+pravila-razrabotki-tipovyx-konfiguracij_002
+
+Если же закрывающий комментарий поставить на следующей строке:
+
+pravila-razrabotki-tipovyx-konfiguracij_003
+
+То при «попроцедурном сравнении» данный комментарий будет признан описанием следующей по тексту процедуры, которая будет считаться измененной.
+
+pravila-razrabotki-tipovyx-konfiguracij_001
+
+3. Добавление объектов верхнего уровня
+Имена объектов верхнего уровня, создаваемых в конфигурации, обязательно должны начинаться с префикса вашей компании или отдельного префикса проекта. Как правило, он состоит из двух-трех заглавных букв и подчёркивания, например АБ_. Соответственно, создаваемые объекты будут называться АБ_НовыйСправочник, АБ_НовыйРегистрСведений, АБ_НовыйДокумент и т. д.
+
+Синонимы (видимые пользователю имена) добавленных объектов верхнего уровня должны начинаться с префикса, заключённого в круглые скобки: (АБ). В результате эти объекты будут визуально выделяться в списках и сгруппировано располагаться в их начале (что облегчает и тестирование, и использование).
+
+pravila-razrabotki-tipovyx-konfiguracij_005
+
+В комментарии создаваемого объекта следует указать имя разработчика, дату и номер задачи, по аналогии с заголовочным комментарием добавляемого кода, но без знаков «++». Это обеспечит привязку объекта конфигурации к задаче, отыскиваемую глобальным поиском.
+
+Пример: Создать справочник «Проекты».
+
+Действия разработчика: в конфигурации создается следующий справочник:
+
+Имя: АБ_Проекты
+Синоним: (АБ) Проекты
+Комментарий: // VION 20.07.2016 000123
+pravila-razrabotki-tipovyx-konfiguracij_004
+
+4. Добавление подчиненных объектов
+Способ добавления реквизитов объектов конфигурации зависит от того, в какой объект конфигурации добавляется реквизит: в объект конфигурации, созданный поставщиком типового решения (т. е. объект на поддержке) или объекта, добавленного в рамках текущего проекта (т. е. уже имеющего префикс).
+
+4.1 Добавление подчиненных объектов в типовые объекты конфигурации
+Подчинённые объекты, добавляемые в существующие (типовые) объекты конфигурации, должны снабжаться префиксами: АБ_ДополнительныйРеквизит, АБ_НоваяТабличнаяЧасть, АБ_ФормаНастроекПользователя, АБ_МакетСпециальнаяНакладная. Но при этом синонимы таких подчинённых объектов создаются без префикса.
+
+В комментарии создаваемого объекта следует указать имя разработчика, дату и номер задачи, по аналогии с оформлением созданного модуля. Это обеспечит привязку объекта конфигурации к задаче, отыскиваемую глобальным поиском.
+
+Пример: Создать реквизит «Проект» документа «Авансовый платеж».
+
+Действия разработчика: в конфигурации создается следующий реквизит:
+
+Имя: АБ_Проект
+Синоним: Проект
+Комментарий: // VION 20.07.2016 000123
+pravila-razrabotki-tipovyx-konfiguracij_006
+
+4.2 Добавление подчиненных объектов в объекты, добавленные в рамках проекта
+Подчиненные объекты, добавляемые в объекты верхнего уровня добавленные в конфигурацию в рамках проекта, т. е. уже содержащие в имени префикс, добавляются без префикса. Синонимы таких подчиненных объектов создаются также без префикса.
+
+В комментарии создаваемого объекта следует указать имя разработчика, дату и номер задачи, по аналогии с оформлением созданного модуля. Это обеспечит привязку объекта конфигурации к задаче, отыскиваемую глобальным поиском. Комментарий можно не указывать, если реквизиты создаются в рамках той же задачи, что и сам объект верхнего уровня.
+
+Пример: Создать реквизит «Ответственный» у справочника «(АБ) Проекты».
+
+Действия разработчика: Если задача отличная от той, в которой создавался справочник «(АБ) Проекты», то в конфигурации создается следующий реквизит:
+
+Имя: Ответственный
+Синоним: Ответственный
+Комментарий: // VION 20.07.2016 000456
+pravila-razrabotki-tipovyx-konfiguracij_007
+
+5. Добавление предопределенных элементов
+При добавлении предопределенных элементов справочников, планов видов характеристик и планов счетов следует использовать те же правила, что и при добавлении подчиненных объектов (табличных частей, реквизитов) в объекты верхнего уровня.
+
+5.1 Добавление предопределенных элементов в типовые объекты конфигурации
+Предопределенные элементы для типовых объектов конфигурации обязательно добавляются с префиксом. Наименование задается без префикса.
+
+Пример: В план счетов «Хозрасчетный» добавить предопределенный счет 10.15 — Бланки строгой отчетности.
+
+Действия разработчика: Добавить следующий предопределенный счет:
+
+Имя: АБ_БланкиСрогойОтчетности
+Код: 10.15
+Наименование: Бланки строгой отчетности
+pravila-razrabotki-tipovyx-konfiguracij_016
+
+Если необходимо переименовать предопределенный элемент типового объекта конфигурации (например, счет), следует оставить сам объект без изменений, а переименование выполнить программно в специальной обработке инициализации.
+
+5.2 Добавление предопределенных элементов в объекты, добавленные в рамках проекта
+В объекты конфигурации добавленные в рамках проекта, т. е. уже содержащие в своем имени префикс, предопределенные элементы добавляются без префикса в имени и наименовании.
+
+6. Использование общих модулей и их строгая структура
+Неоднократно используемые в конфигурации процедуры и функции, обработчики подписок и регламентных заданий размещаются в общих модулях. Для этих целей следует добавлять собственные модули, добавленные по правилам добавления объектов верхнего уровня, оставляя типовые модули неизменными. При разработке будут полезны следующие общие модули («АБ_» — префикс):
+
+АБ_ОбщегоНазначения (клиент, сервер, внешнее соединение) — для размещения обычных процедур и функций.
+АБ_Серверный (только сервер) — для процедур и функций, которые обязательно должны исполняться в среде сервера.
+АБ_Глобальный — для процедур и функций, вызов которых стандартным способом (через имя модуля и точку) неудобен.
+АБ_Привилегированный — для процедур и функций, которые всегда нужно исполнять под полными правами.
+АБ_ПовторноеИспользование — для кэширования возвращаемых значений некоторых функций.
+pravila-razrabotki-tipovyx-konfiguracij_008
+
+В отдельные общие модули можно выносить код функциональных блоков большого объёма, в этом случае упрощается отладка такого кода при использовании хранилища конфигурации. В остальных случаях, разработчику следует убедиться в наличии подходящего общего модуля перед добавлением нового модуля в конфигурацию.
+
+7. Использование подписок и их строгая структура
+Для обработки различных событий, связанных с объектами типовой конфигурации, следует использовать механизм подписок вместо внесения модификации в модули самих объектов, если есть такая возможность.
+
+Для каждого события может быть не более одной подписки (как объекта метаданных), обработчик которой и связанный с ним код должны размешаться в отдельном общем модуле (для повышения параллельности работы разработчиков с хранилищем). Имя подписки и имя общего модуля должны быть одинаковы и соответствовать обрабатываемому событию. В качестве источника подписки указываются все потенциально возможные для обработки объекты (все справочники, все документы и т. п.).
+
+Процедура-обработчик подписки должна содержать вызовы подпроцедур, выполняющих нужные действия. Обращение к ним осуществляется в зависимости от типа источника, а также в нужной последовательности. Комментирование в модуле подписки при добавлении кода по новым задачам осуществляется по общим правилам.
+
+Пример: При проведении документа «Авансовый платеж», делать записи в регистр накопления «(АБ) Затраты по проектам».
+
+Действия разработчика:
+
+1. Создать подписку «АБ_ДокументыОбработкаПроведения» (если такая подписка не была создана раннее), в качестве источника указать все документы, событие — «ОбработкаПроведения».
+
+pravila-razrabotki-tipovyx-konfiguracij_009
+
+2. Создать общий серверный модуль «АБ_ДокументыОбработкаПроведения».
+
+pravila-razrabotki-tipovyx-konfiguracij_010
+
+3.  В модуле создать экспортную процедуру «ОбработкаПроведения». Выбрать данную процедуру в качестве обработчика созданной ранее подписки. В процедуре, в зависимости от типа документа, вызываются необходимые обработчики.
+
+pravila-razrabotki-tipovyx-konfiguracij_011
+
+4. Модуль документа «Авансовый платеж» должен остаться без изменений.
+
+8. Редактирование форм
+8.1 Редактирование форм типовых объектов
+Если изменение типовой формы (как обычной, так и управляемой) небольшое (например, вынести на форму несколько новых реквизитов), то выполнять такое изменение следует полностью программно. Т. е. изменения вносятся только в модуль формы, а сама форма в конфигураторе остается неизменной. Некоторым разработчикам такой метод редактирования форм поначалу может показаться довольно трудоемким. Однако, имея достаточный опыт программного изменения форм, на добавление одного элемента будет уходить не более 3-5 минут. Затраченное время многократно окупается при последующих обновлениях типовой конфигурации.
+
+Пример: На основную форму документа «Авансовый платеж», добавить реквизит «(АБ) Проект».
+
+Действия разработчика: В обработчике формы «ПриСозданииНаСервере» добавить процедуру «ДоработатьФормуПрограммно()». В данной процедуре добавить нужный элемент в элементы формы.
+
+pravila-razrabotki-tipovyx-konfiguracij_012
+
+Возможно создание отдельного модуля, в котором будут содержаться все необходимые процедуры и функции для изменения типовых форм.
+
+pravila-razrabotki-tipovyx-konfiguracij_013
+
+В типовых конфигурациях на базе БСП 2, уже есть специальный функционал для данных целей:
+
+pravila-razrabotki-tipovyx-konfiguracij_017
+
+В процедуре «ПриСозданииНаСервере» общего модуля «МодификацияКонфигурацииПереопределяемый» можно вызвать свой обработчик.
+
+pravila-razrabotki-tipovyx-konfiguracij_018
+
+Где по имени формы можно вызвать необходимую процедуру с программной доработкой формы.
+
+pravila-razrabotki-tipovyx-konfiguracij_019
+
+Если же на форму планируется добавить большое количество элементов или табличных частей, то возможно и ручное изменение формы. В этом случае рекомендуется создать на форме отдельную вкладку, и уже на ней размещать все необходимые элементы. Это значительно облегчит дальнейшее обновление формы.
+
+8.2 Редактирование форм объектов, добавленных в рамках проекта
+Формы объектов, добавленных в рамках проекта (т. е. имеющие в своем названии префикс) редактируются обычным способом.
+
+9. Принципы работы с ролями
+Типовые роли всегда следует оставлять неизменными (если это возможно). Это нужно для облегчения обновления изменённой конфигурации из новых релизов, потому что сравнение и восстановление ролей является сложным и кропотливыми процессом.
+
+Права на добавляемые в конфигурацию объекты следует назначать в новых, создаваемых для этой цели ролях.
+
+Запреты на доступ к данным, разрешенным типовыми ролями, следует реализовывать программным способом, пока это возможно. И только когда подобный запрет будет очень сложно реализовать программно (либо такое решение будет ненадёжным), допустимо модифицировать типовые роли. Изменения типовых ролей должны быть минимально необходимыми и документированными. Например, если необходимо изменить текст ограничений доступа в роли (RLS), то согласно общим правилам, следует закомментировать весь типовой код, после чего добавить код с необходимыми изменениями.
+
+pravila-razrabotki-tipovyx-konfiguracij_014
+
+10. Внешние отчеты и обработки
+Большинство доработок в системе может быть выполнено с помощью механизма Дополнительных отчетов и обработок.
+
+pravila-razrabotki-tipovyx-konfiguracij_015
+
+В конфигурациях на основе БСП 2 (ERP, УТ 11, БП 3.0, ЗУП 3.0 и т. д) этот механизм значительно расширен. С его помощью без изменения конфигурации возможно создавать внешние отчеты и обработки (с размещением команды запуска в командном интерфейсе и возможностью настройки доступа различным пользователям), обработки заполнения документа, обработки создания документа на основании, дополнительные печатные формы и др.
+
+Разработчикам рекомендуется активно использовать механизм Дополнительных отчетов и обработок, когда это возможно."}
+},
+{0,
+{"Правила доработки типовых конфигураций 1С для облегчения их дальнейшего обновления (часть 2)",0,0,"","Правила доработки типовых конфигураций 1С для облегчения их дальнейшего обновления (часть 2)
+Опубликовано 05.10.2016 автором Виталий Онянов
+Logo_1c_8_Razradotka
+
+Продолжаем знакомиться с правилами доработки типовых конфигураций, соблюдение которых позволяет значительно облегчить последующее обновление и поддержку измененных конфигураций.
+
+Первую часть читайте здесь. В этой статье будет рассказано о некоторых приемах и методах, которые, по моему мнению, обязательно должны присутствовать в редактируемой конфигурации вне зависимости от масштаба проекта.
+
+
+0. Оглавление
+Использование хранилища конфигураций
+Самоидентификация тестовых баз
+Обработка инициализации
+Справочник предопределённых значений
+Просмотр временных таблиц в отладчике
+Версии внешних отчётов и обработок
+1. Использование хранилища конфигураций
+Разработка обязательно должна вестись с использованием хранилища конфигурации. В некоторых случаях хранилищ конфигураций может быть несколько. Например, в схеме ниже используется 2 независимых хранилища:
+
+Для разработочных и одной тестовой базы.
+Для рабочей базы и специальной базы — сборки.
+pravila-razrabotki-tipovyx-konfiguracij-chast2__001
+
+В этом случае задача с момента начала разработки до переноса в продуктивную базу проходит следующие этапы:
+
+Разработка ведется в одной из разработочных баз
+После выполнения, задача помещается в разработочное хранилище конфигурации
+Далее, через хранилище задача попадает в тестовую базу (Тестовая 1)
+Если по задаче есть замечания, разработчик исправляет их в своей разработочной базе, а затем через хранилище снова передает изменения на тест в тестовую базу.
+Когда все этапы тестирования пройдены, разработчик сохраняет файл конфигурации из тестовой базы и посредством сравнения / объединения конфигураций переносит свою задачу в специальную базу — сборку.
+В сборке происходит дополнительный тест задачи (после переноса).
+Затем, все затронутые объекты помещаются в хранилище рабочей базы и сборки.
+В назначенное время все задачи помещенные в хранилище переносятся в рабочую базу.
+На совсем небольших проектах возможно подключение всех баз к одному общему хранилищу конфигурации:
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__002
+
+2. Самоидентификация тестовых баз
+В проекте часто имеется несколько тестовых и разработочных баз. Они периодически обновляются выгрузками из рабочей базы. В связи с этим, для снижения риска порчи данных и повышения удобства работы, полезен следующий функционал. Информационная база хранит реквизиты рабочей базы (имя базы, имя сервера или полный путь подключения) — например, в константе.
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__003
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__004
+
+В результате каждая копия может определить, является она рабочей базой или нет.
+
+Если база — не рабочая, то:
+
+При начале работы системы в заголовок главного окна нужно автоматически добавить информацию о том, что данная база является тестовой.
+Не должен выполняться код обработчиков некоторых регламентных заданий. Например, проверка на рабочую базу должна осуществляться для всех регламентных заданий, выполняющий периодический обмен с внешними системами. При необходимости отладки таких заданий константу можно изменить на реквизиты данной тестовой базы (после изменения настроек обмена).
+Функцию проверку можно добавить, например, в процедуру «ПриНачалеРаботыСистемы()» модуля управляемого приложения.
+
+Процедура ПриНачалеРаботыСистемы()
+
+    // СтандартныеПодсистемы
+    СтандартныеПодсистемыКлиент.ПриНачалеРаботыСистемы();
+    // Конец СтандартныеПодсистемы
+
+    //++ VION 08.09.2016 Общие объекты
+    АБ_ОбщегоНазначенияКлиент.УстановитьЗаголовокИнформационнойБазы();
+    //-- VION 08.09.2016
+
+КонецПроцедуры
+Где процедура «УстановитьЗаголовокИнформационнойБазы()» имеет следующий вид:
+
+//**************************************************
+Процедура УстановитьЗаголовокИнформационнойБазы() Экспорт
+    Если АБ_ОбщегоНазначенияСервер.ЭтоРабочаяБаза() Тогда
+        Возврат;
+    КонецЕсли;
+    ИмяИнформационнойБазы = АБ_ОбщегоНазначенияСервер.ПолучитьИмяИнформационнойБазы();
+    УстановитьКраткийЗаголовокПриложения(""(! ""+ИмяИнформационнойБазы+"" !)"");
+КонецПроцедуры
+Также в этом примере используются следующие серверные процедуры:
+
+//**************************************************
+Функция ЭтоРабочаяБаза() Экспорт
+    Если Врег(ПолучитьИмяИнформационнойБазы() )= Врег(СокрЛП(Константы.АБ_ИмяРабочейБазы.Получить())) Тогда
+        Возврат Истина;
+    Иначе
+        Возврат Ложь;
+    КонецЕсли;
+Конецфункции
+
+//**************************************************
+Функция ПолучитьИмяИнформационнойБазы() Экспорт
+
+    СтрокаПодключения = СтрокаСоединенияИнформационнойБазы();
+
+    НомерСимвола = СтрНайти(СтрокаПодключения,""File="");
+    Если НомерСимвола > 0 Тогда
+        //Это Файловая база
+        СтрокаСправа = Сред(СтрокаПодключения,НомерСимвола+6);
+        Возврат Сред(СтрокаСправа,1,СтрДлина(СтрокаСправа)-2);
+    КонецЕсли;
+
+    НомерСимвола = СтрНайти(СтрокаПодключения,""Ref="");
+    Если НомерСимвола > 0 Тогда
+        //Это серверная база
+        СтрокаСправа = Сред(СтрокаПодключения,НомерСимвола+5);
+        Возврат Сред(СтрокаСправа,1,СтрДлина(СтрокаСправа)-2);
+    КонецЕсли;
+
+    Возврат """";
+
+Конецфункции
+Результат:
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__005
+
+Обработчик регламентного задания, связанного с обменом данными, должен иметь соответствующую проверку:
+
+//**************************************************
+Процедура ВыполнитьОбменДанными() Экспорт
+
+    Если НЕ АБ_ОбщегоНазначенияСервер.ЭтоРабочаяБаза() Тогда
+        Возврат;
+    КонецЕсли;
+
+    //... Код регламентной процедуры
+
+Конецфункции
+3. Обработка инициализации
+Некоторые модификации требуют действий, которые нельзя выполнить в конфигураторе. Например, заполнение реквизитов предопределённых элементов справочника (помимо кода и наименования), обязательное первоначальное заполнение каких-либо значений. Все подобные действия по разным задачам проекта следует выполнять в одном месте — в обработке инициализации.
+
+Для данной обработки должны соблюдаться следующие правила:
+
+Обработка должна быть доступна только пользователям с полными правами.
+Отдельное вынесение в интерфейс данной обработки не требуется.
+Обработка должна иметь одну форму с кратким пояснительным текстом и кнопкой вызова процедуры выполнения пакета инициализационных действий.
+Данная процедура должна быть доступна для программного вызова извне.
+Процедура выполнения пакета должна последовательно вызвать подпроцедуры инициализации, написанные разными разработчиками в рамках своих задач. В каждой из них должна быть собственная (независимая) обработка исключительных ситуаций, с выдачей сообщений об ошибках.
+Ошибка, возникшая в одной в подпроцедуре, не должна влиять на остальную инициализацию.
+Обработку предполагается запускать многократно. Каждое действие должно корректно отрабатывать как при первом запуске обработки, так и при повторных запусках. Во втором случае не должно быть каких-либо побочных эффектов или потери введённых пользователем данных.
+В конфигурацию также должен быть добавлен механизм автоматического обнаружения изменений в обработке инициализации и предложения пользователю с полными правами выполнить инициализацию при первой же возможности.
+
+Один из вариантов реализации такого механизма:
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__008
+
+В конфигурации предусматривается константа, хранящая версию последней выполненной обработки инициализации.
+В обработке предусматривается экспортная переменная, хранящая версию (целое число). Версия устанавливается при создании обработки-объекта, значение версии прописано в коде модуля. При любой модификации обработки разработчик должен увеличить данную версию на единицу.
+При начале работы системы, если текущий пользователь имеет полные права и версии обработки в конфигурации и в константе отличаются, выполняется обработка инициализации.
+В данном примере, добавлена константа «АБ_ВерсияВыполненнойОбработкиИнициализации»
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__007
+
+В модуле управляемого приложения в процедуру «ПриНачалеРаботыСистемы()» добавлен вызов серверной процедуры:
+
+Процедура ПриНачалеРаботыСистемы()
+
+    // СтандартныеПодсистемы
+    СтандартныеПодсистемыКлиент.ПриНачалеРаботыСистемы();
+    // Конец СтандартныеПодсистемы
+
+    //++ VION 08.09.2016 Общие объекты
+    АБ_ОбщегоНазначенияКлиент.УстановитьЗаголовокИнформационнойБазы();
+    АБ_ОбщегоНазначенияСервер.ВыполнитьОбработкуИнициализации();
+    //-- VION 08.09.2016
+
+КонецПроцедуры
+Которая проверяет наличие прав и вызывает обработку инициализации:
+
+//**************************************************
+Процедура ВыполнитьОбработкуИнициализации() Экспорт
+
+    Если РольДоступна(""ПолныеПрава"") Тогда
+        Обработки.АБ_ОбработкаИнициализации.Создать().ВыполнитьОбработку();
+    КонецЕсли;
+
+КонецПроцедуры
+Код модуля обработки инициализации
+
+//////////////////////////////////////////////////////////
+
+// ОБРАБОТКА ИНИЦИАЛИЗАЦИИ
+// --------------------------
+// Обработку предполагается запускать многократно.
+// Каждое действие должно корректно отрабатывать как при первом запуске обработки, так и при повторных запусках.
+// Во втором случае не должно быть каких-либо побочных эффектов или потери введённых пользователем данных.
+// В некоторых случаях (если того требует задача) возможно выявление и исправление настроек, уже сделанных,
+// но некорректно изменённых пользователем с момента предыдущей инициализации.
+// --------------------------
+// Используемые объекты конфигурации:
+//  1. Константа.ВерсияВыполненнойОбработкиИнициализации - Тип: Число (5,0)
+//  2. Вызов обработки при старте системы: Обработки.ОбработкаИнициализации.Создать().ВыполнитьОбработку();
+// --------------------------
+// Алгоритм для разработчика:
+//   1. В процедуре ПолучитьТекущуюВерсиюОбработки() увеличиваете весрию на 1, напрмер было 3, вы ставите 4.
+//   2. В модуль обработки добавляете процедуру ОбработкаИнициализации_Весия_4(Отказ).
+//   3. Если в процессе обработки возникли ошибки, необходимо установить переменную Отказ в значение Истина.
+//   4. Необходимый код располагаете в данной процедуре.
+
+//********************************************************
+Функция ПолучитьТекущуюВерсиюОбработки() Экспорт
+
+    // ВНИМАНИЕ!
+    // Код не комментируем, просто увеличиваем текущую версию обработки
+    // Тип версии - Число (5,0)
+    Возврат 3;
+
+КонецФункции
+
+//********************************************************
+Функция ПолучитьПрошлуюВерсиюОбработки() Экспорт
+
+    Возврат Константы.АБ_ВерсияВыполненнойОбработкиИнициализации.Получить();
+
+КонецФункции
+
+//********************************************************
+Функция УстановитьВерсиюОбработки(ТекущаяВерсия) Экспорт
+
+    //Запишем текущую версию в константу
+    Попытка
+        Константы.АБ_ВерсияВыполненнойОбработкиИнициализации.Установить(ТекущаяВерсия);
+        Возврат Истина;
+    Исключение
+        Сообщить(""Обработка инициализации: "" + ОписаниеОшибки());
+        Возврат Ложь;
+    КонецПопытки;
+
+КонецФункции
+
+//********************************************************
+Функция ВыполнитьОбработку(ВсеОбработчики = Ложь) Экспорт
+
+    //Обработку инициализации может выполнить только пользователь с полными правами
+    Если Не РольДоступна(""ПолныеПрава"") Тогда
+        Сообщить(""Обработка инициализации: Недостаточно прав для выполнения обработки!"");
+        Возврат Ложь;
+    КонецЕсли;
+
+    Если ВсеОбработчики Тогда
+        ПрошлаяВерсия = 0;
+    Иначе
+        ПрошлаяВерсия = ПолучитьПрошлуюВерсиюОбработки();
+    КонецЕсли;
+    ТекущаяВерсия = ПолучитьТекущуюВерсиюОбработки();
+
+    //Обработка не нужна
+    Если ТекущаяВерсия <= ПрошлаяВерсия Тогда
+        Возврат Истина;
+    КонецЕсли;
+
+    //В цикле выполняем все необходимые обработки
+    Отказ = Ложь;
+    Для Сч = ПрошлаяВерсия+1 По ТекущаяВерсия Цикл
+        Выполнить(""ОбработкаИнициализации_Весия_""+Сч+""(Отказ);"");
+    КонецЦикла;
+
+    Если Отказ Тогда
+        Сообщить(""Обработка инициализации: Ошибка выполнения обоработки!"");
+        Возврат Ложь;
+    КонецЕсли;
+
+    //Запишем текущую версию в константу
+    Если УстановитьВерсиюОбработки(ТекущаяВерсия) Тогда
+        Сообщить(""Обработка инициализации: Переход на версию "" + ТекущаяВерсия + "" выполнен успешно!"");
+        Возврат Истина;
+    Иначе
+        Возврат Ложь;
+    КонецЕсли;
+
+КонецФункции
+
+//********************************************************
+Процедура ОбработкаИнициализации_Весия_1(Отказ)
+
+    //Действия обработчика
+    Сообщить(""Обработка инициализации, выполнен переход на версию 1"");
+
+КонецПроцедуры
+Форма обработки:
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__006
+
+Скачать обработку можно, например, здесь.
+
+4. Справочник предопределённых значений
+При доработке конфигураций часто возникает необходимость обращаться из кода с существующим элементам справочников, не являющихся предопределёнными. Т. к. поиск по коду, наименованию или реквизиту не является надёжным решением, можно добавить в конфигурацию справочник «Предопределённые значения» с единственным реквизитом «Значение» типа «СправочникСсылка».
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__009
+
+Далее по каждой возникшей задаче в этот справочник добавляется предопределенный элемент.
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__011
+
+Реквизит «Значение» данного элемента заполняется обработкой инициализации или вручную.
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__010
+
+Обращение к такому значению осуществляется подобным кодом:
+
+КонтрагентАгроимпульс = Справочники.АБ_ПредопределенныеЗначения.Контрагент_Агроимпульс.Значение;
+Права на справочник предопределенных значений должны обеспечивать как доступность его содержимого, так и возможность настройки значений только пользователями с нужными ролями.
+
+5. Просмотр временных таблиц в отладчике
+При отладке сложных запросов с временными таблицами нужна возможность просматривать содержимое этих таблиц, которую отладчик не предоставляет.
+
+Для просмотра временных таблиц запроса в отладчике удобно использовать специальную функцию. Данная функция парсит текст запроса, вычленяет все временные таблицы, вычисляет их и результат складывает в структуру.
+
+Для удобства использования удобно поместить процедуру в один из глобальных модулей конфигурации.
+
+funkciya-prosmotra-vremennyx-tablic-zaprosa-v-otladchike_03
+
+funkciya-prosmotra-vremennyx-tablic-zaprosa-v-otladchike_04
+
+Функция предназначена для использования в окне «Вычислить выражение» отладчика — возвращает значение, удобное для просмотра в этом окне. Функция максимально автоматизирована и может работать с входными данными разных типов. Назначение аргументов функции понятно из их имён.
+
+funkciya-prosmotra-vremennyx-tablic-zaprosa-v-otladchike_01
+
+Текст процедур можно посмотреть — здесь.
+
+6. Версии внешних отчётов и обработок
+При использовании внешних отчетов и обработок в поле «Комментарий» следует указывать строку, отображающую условную версию объекта. Например, начиная с «v1.0» и далее увеличивая старший или младший номер (в зависимости от объёма изменений) при каждом цикле доработки объекта.
+
+pravila-razrabotki-tipovyx-konfiguracij-chast2__012
+
+Данный комментарий доступен из кода, и при открытии формы его следует добавлять к заголовку окна:
+
+#Область СобытияФормы
+
+////////////////////////////////////////////////////////////
+// ОБРАБОТЧИКИ СОБЫТИЙ ФОРМЫ
+
+//**********************************************************
+&НаСервере
+Процедура ПриСозданииНаСервере(Отказ, СтандартнаяОбработка)
+
+    //Заголовок формы
+    ЭтаФорма.АвтоЗаголовок = Ложь;
+    ЭтаФорма.Заголовок = ЗаголовокОтчета();
+
+КонецПроцедуры
+
+//**********************************************************
+&НаСервере
+Функция ЗаголовокОтчета()
+
+    ТекОбъект = РеквизитФормыВЗначение(""Объект"");
+    Комментарий = ТекОбъект.Метаданные().Комментарий;
+    Возврат ТекОбъект.Метаданные().Синоним
+        + ?(ЗначениеЗаполнено(Комментарий),"" ("" + Комментарий + "")"","""");
+
+КонецФункции
+
+#КонецОбласти
+Тогда версия обработки или отчета всегда будет видна в заголовке формы."}
+},
+{0,
+{"Отладка (попасть в отладку)",0,0,"","Только самые простые задачи не требуют отладки. Для решения сложных задач без отладки в принципе не обойтись. С годами придумал способ упростить этот процесс.
+1) Включаем отладку (без точек останова), включаем замер производительности, выполняем отлаживаемые действия, выключаем замер производительности (появится список выполненных команд и он будет подсвечен в коде).
+2) Потом устанавливаем точки останова и идем по шагам, т.е. выполняем обычную отладку.
+Теперь мы заранее видим какой код будет исполнен (и сколько раз). Это значительно ускоряет процесс отладки сложного, объемного кода."}
 }
 }
 }
