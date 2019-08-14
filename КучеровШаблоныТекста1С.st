@@ -13061,13 +13061,13 @@ endfunction // ООП_method()
 СтраницаОсновное.Заголовок	=	""Основное"";"}
 },
 {0,
-{"Группы добавить",0,0,"ФЭДГ[рупп]","лГруппа<?""Название группы (слитно)"">			=	пФорма.Элементы.Добавить(лПрефиксИмя + ""Группа<?""Название группы (слитно)"">"", Тип(""ГруппаФормы""), пФорма); // (<Имя>, <ТипЭлемента>, <Родитель>, <Элемент>)
+{"Группы добавить",0,0,"ФЭДГ[рупп]","лГруппа<?""Название группы (слитно)"">			=	пФорма.Элементы.Добавить(лПрефиксИмя + ""Группа<?""Название группы (слитно)"">"", Тип(""ГруппаФормы""), пФорма);
 лГруппа<?""Название группы (слитно)"">.Вид		=	ВидГруппыФормы.ОбычнаяГруппа;
 лГруппа<?""Название группы (слитно)"">.Заголовок	=	""<?""Название группы (слитно)"">"";
 лГруппа<?""Название группы (слитно)"">.ОтображатьЗаголовок = Ложь;"}
 },
 {0,
-{"Группы вставить",0,0,"ФЭВГ[рупп]","лГруппа<?""Название группы (слитно)"">			=	пФорма.Элементы.Вставить(лПрефиксИмя + ""Группа<?""Название группы (слитно)"">"", Тип(""ГруппаФормы""), пФорма, ПередКемВставить); // (<Имя>, <ТипЭлемента>, <Родитель>, <Элемент>)
+{"Группы вставить",0,0,"ФЭВГ[рупп]","лГруппа<?""Название группы (слитно)"">			=	пФорма.Элементы.Вставить(лПрефиксИмя + ""Группа<?""Название группы (слитно)"">"", Тип(""ГруппаФормы""), пФорма, ПередКемВставить);
 лГруппа<?""Название группы (слитно)"">.Вид		=	ВидГруппыФормы.ОбычнаяГруппа;
 лГруппа<?""Название группы (слитно)"">.Заголовок	=	""<?""Название группы (слитно)"">"";
 лГруппа<?""Название группы (слитно)"">.ОтображатьЗаголовок = Ложь;"}
@@ -15380,8 +15380,8 @@ https://flumi.ru/articles/show/programmnaia_rabota_s_rekvizitami_i_elementami_fo
 {"Открыть форму",0,0,"ПоказатьДок[умент]","<?""Имя документа"">.ПолучитьФорму().Открыть();"}
 }
 },
-{12,
-{"Командная строка",1,0,"",""},
+{14,
+{"Командная строка (CMD)",1,0,"",""},
 {0,
 {"Запуск обработки",0,0,"","// Запуск обработки из командной строки Windows (для запуска через службы Windows)
 
@@ -17614,6 +17614,31 @@ certutil -f -encode raw.txt encoded.txt
 
 Декодировать:
 certutil -decode encoded.txt raw.txt"}
+},
+{0,
+{"Текущая дата",0,0,"","set day=%DATE:~0,2%
+set month=%DATE:~3,2%
+set year=%DATE:~6,4%
+
+set hour=%TIME:~0,2%
+set minute=%TIME:~3,2%
+set second=%TIME:~6,2%
+
+echo %day%
+echo %month%
+echo %year%
+
+echo %hour%
+echo %minute%
+echo %second%
+
+set YYYYMMDD=%year%%month%%day%
+
+echo %YYYYMMDD%"}
+},
+{0,
+{"Создать папку с текущей датой, если её нет (mkdir)",0,0,"","set curr_date=%date:~6,4%%date:~3,2%%date:~0,2%
+if not exist ""C:\%curr_date%"" mkdir ""C:\%curr_date%"""}
 }
 },
 {2,
@@ -30395,7 +30420,7 @@ Language 1C (BSL) 	- Поддержка языка 1С:Предприятие 8 
 OneScript Debug 	- Сервер отладки 1Script"}
 }
 },
-{7,
+{8,
 {"PowerShell",1,0,"",""},
 {0,
 {"Работа с JSON-объектами в Powershell",0,0,"","Работа с JSON-объектами в Powershell
@@ -30614,13 +30639,17 @@ $memtotal = Get-WmiObject -Class win32_OperatingSystem -ComputerName $scripthost
 $memtotal | Format-List $fieldPercentage,$fieldfreeram,$fieldtotalram,$fieldfreeVram,$fieldtotalVram;
 
 +++
-get-wmiobject WIN32_PROCESS | Sort-Object -Property ws -Descending|select -first 10|Select processname, @{Name=""Mem Usage(MB)"";Expression={[math]::round($_.ws / 1mb)}},@{Name=""ProcessID"";Expression={[String]$_.ProcessID}},@{Name=""UserID"";Expression={$_.getowner().user}}
+get-wmiobject WIN32_PROCESS | Sort-Object -Property ws -Descending|select -first 10|Select processname, @{Name=""Mem Usage(MB)"";Expression={[math]::round($_.ws / 1mb)}},@{Name=""ProcessID"";Expression={[String]$_.ProcessID}},@{Name=""UserID"";Expression={$_.getowner().user}} | Format-Table
 
 ++
-get-process -computername $tag1 | Group-Object -Property ProcessName | 
-    Format-Table Name, @{n='Mem (KB)';e={'{0:N0}' -f (($_.Group|Measure-Object WorkingSet -Sum).Sum / 1KB)};a='right'} -AutoSize
+get-process -computername $tag1 | Group-Object -Property ProcessName | Format-Table Name, @{n='Mem (KB)';e={'{0:N0}' -f (($_.Group|Measure-Object WorkingSet -Sum).Sum / 1KB)};a='right'} -AutoSize
 	
 "}
+},
+{0,
+{"| Format-Table",0,0,"","Иногда может не записывать таблицу в файл, хотя в выводе в консоль она будет, тогда надо в создание таблицы дописывать "" | Format-Table"".
+Например, 
+get-wmiobject WIN32_PROCESS | Sort-Object -Property ws -Descending|select -first 10|Select processname, @{Name=""Mem Usage(MB)"";Expression={[math]::round($_.ws / 1mb)}},@{Name=""ProcessID"";Expression={[String]$_.ProcessID}},@{Name=""UserID"";Expression={$_.getowner().user}} | Format-Table"}
 },
 {0,
 {"Получить сетевую активность полученных и отправленных байтов (network activity bytes send and receive)",0,0,"","ms windows network activity bytes send and receive in command line
@@ -30631,7 +30660,7 @@ In Powershell:
 $computer 	= ""LocalHost""
 $namespace 	= ""root\CIMV2""
 $Tcpip_NI 	= Get-WmiObject -class Win32_PerfRawData_Tcpip_NetworkInterface -computername $computer -namespace $namespace
-$Tcpip_NI | Select BytesReceivedPersec,BytesSentPersec,BytesTotalPersec
+$Tcpip_NI | Select BytesReceivedPersec,BytesSentPersec,BytesTotalPersec | Format-Table
 
 In cmd line using just wmic:
 
@@ -30645,7 +30674,12 @@ $nic 		= [System.Net.NetworkInformation.Networkinterface]::GetAllNetworkInterfac
 $stats 		= $nic.GetIPv4Statistics()
 $bytesSent 	= $stats.BytesSent
 $bytesReceived = $stats.BytesReceived
-
+$ifIndex
+$nic_name
+$nic
+$stats
+$bytesSent
+$bytesReceived
 +
 [System.Net.NetworkInformation.NetworkInterface]::GetAllNetworkInterfaces() | ForEach-Object {$_.GetIPv4Statistics()}
 
