@@ -30844,18 +30844,13 @@ foreach ($NetworkInterface in $NetworkInterfaces)
 		$objNetworkInterfaceInfo | Add-Member -MemberType NoteProperty -Name Name -Value $NetworkInterface.Name
 		$objNetworkInterfaceInfo | Add-Member -MemberType NoteProperty -Name NetworkInterfaceBytesSent -Value $NetworkInterfaceBytesSent
 		$objNetworkInterfaceInfo | Add-Member -MemberType NoteProperty -Name NetworkInterfaceBytesReceived -Value $NetworkInterfaceBytesReceived
-		$NetworkInterface.Id
-		$NetworkInterface.Name
-		$NetworkInterfaceBytesSent
-		$NetworkInterfaceBytesReceived
-		
+
+		$objNetworkInterfaceInfo
 		$list.Add($objNetworkInterfaceInfo)
-		#$Mass = ,$objNetworkInterfaceInfo + $Mass
 	}
 }
 $list | ConvertTo-Json
-#$Mass | ConvertTo-Json
-"}
+#$list.ToArray()"}
 },
 {0,
 {"| Format-Table",0,0,"","Иногда может не записывать таблицу в файл, хотя в выводе в консоль она будет, тогда надо в создание таблицы дописывать "" | Format-Table"".
