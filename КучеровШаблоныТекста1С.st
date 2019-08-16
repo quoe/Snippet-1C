@@ -1,5 +1,5 @@
 ﻿{1,
-{133,
+{132,
 {"КучеровРМ (сниппеты)",1,0,"",""},
 {3,
 {"Стандартные",1,0,"",""},
@@ -1585,10 +1585,10 @@ RegExp.Pattern 		= Шаблон;
 }
 }
 },
-{1,
-{"Исключения",1,0,"",""},
+{4,
+{"Исключения (попытка), эмуляция ошибки",1,0,"",""},
 {0,
-{"Заметка",0,0,"искл[заметка]","//+++ <?"""", ДатаВремя, """"> Заметка выводимая через исключение
+{"Заметка",0,0,"ПопыткаЗам[етк]","//+++ <?"""", ДатаВремя, """"> Заметка выводимая через исключение
 Попытка
 	// В попытке может содержаться случай, при котором появляется баг в системе
 	ПринудительныйВызовОшибкиДляПривлеченияВнимания 		= 1 / 0;
@@ -1616,6 +1616,60 @@ RegExp.Pattern 		= Шаблон;
 КонецПопытки;
 //--- <?"""", ДатаВремя, """"> Заметка выводимая через исключение
 "}
+},
+{0,
+{"Заметка через вопрос о её вызове",0,0,"","Оповещение 	= Новый ОписаниеОповещения(""ВопросПрерватьВыполнениеКода"", ЭтаФорма, Параметры);
+ПоказатьВопрос(Оповещение, ""Вызвать прерывание кода?"", РежимДиалогаВопрос.ДаНет, 0);
+
+&НаКлиенте
+Процедура ВопросПрерватьВыполнениеКода(Результат, Параметры) Экспорт
+	
+	Если Результат = КодВозвратаДиалога.Да Тогда
+		Попытка
+			// В попытке может содержаться случай, при котором появляется баг в системе
+			ПринудительныйВызовОшибкиДляПривлеченияВнимания 		= 1 / 0;
+		Исключение
+			ПринудительныйВызовОшибкиДляПривлеченияВниманияИнфо 	= ИнформацияОбОшибке();
+			ПринудительныйВызовОшибкиДляПривлеченияВниманияДопИнфо 	= ""
+			|
+			|Описание: """""" + ПринудительныйВызовОшибкиДляПривлеченияВниманияИнфо.Описание + """"""
+			|ИсходнаяСтрока: """""" + ПринудительныйВызовОшибкиДляПривлеченияВниманияИнфо.ИсходнаяСтрока + """""""";
+			ПринудительныйВызовОшибкиДляПривлеченияВниманияАвтор 	= ""
+			|
+			|Заметку добавил пользователь: """"АйТи КучеровРМ"""", <?"""", ДатаВремя, """">.""; 
+			
+			ПринудительныйВызовОшибкиДляПривлеченияВниманияЗаметка 	= ""<?""Текст заметки или комментария"">'""; // Причина, по которой надо вызвать исключение
+			ПринудительныйВызовОшибкиДляПривлеченияВнимания 		= 
+			""ПРИНУДИТЕЛЬНЫЙ ВЫЗОВ ОШИБКИ ДЛЯ ПРИВЛЕЧЕНИЯ ВНИМАНИЯ!
+			|В модуле: """""" + ПринудительныйВызовОшибкиДляПривлеченияВниманияИнфо.ИмяМодуля + """""", 
+			|в строке № "" + ПринудительныйВызовОшибкиДляПривлеченияВниманияИнфо.НомерСтроки + "".
+			|Заметка: """""" + ПринудительныйВызовОшибкиДляПривлеченияВниманияЗаметка + """""""" +  
+			//ПринудительныйВызовОшибкиДляПривлеченияВниманияДопИнфо + // Для вывода информации описания ошибки и вида исходной ошибочной строки 
+			ПринудительныйВызовОшибкиДляПривлеченияВниманияАвтор;
+			
+			ВызватьИсключение(ПринудительныйВызовОшибкиДляПривлеченияВнимания);
+			
+		КонецПопытки;
+	КонецЕсли;
+	
+КонецПроцедуры"}
+},
+{0,
+{"Эмуляция регулярной ошибки",0,0,"","Если Секунда(ТекущаяДата()) % 2 = 0 Тогда
+	лЭмуляцияОшибки 	= 1 / 0;
+КонецЕсли;"}
+},
+{0,
+{"Эмуляция регулярной ошибки в Попытке",0,0,"ПопыткаЭмул[яц]","Попытка
+	
+	Если Секунда(ТекущаяДата()) % 2 = 0 Тогда
+		лЭмуляцияОшибки 	= 1 / 0;
+	КонецЕсли;
+	
+Исключение
+	лСообщениеОшибки 	= ""Ошибка: "" + ОписаниеОшибки();
+	Сообщить(лСообщениеОшибки, СтатусСообщения.Важное);
+КонецПопытки; "}
 }
 },
 {15,
@@ -30526,7 +30580,7 @@ Language 1C (BSL) 	- Поддержка языка 1С:Предприятие 8 
 OneScript Debug 	- Сервер отладки 1Script"}
 }
 },
-{8,
+{9,
 {"PowerShell",1,0,"",""},
 {0,
 {"Работа с JSON-объектами в Powershell",0,0,"","Работа с JSON-объектами в Powershell
@@ -30663,17 +30717,21 @@ $File.VersionInfo | ConvertTo-Json
 JSON прост для понимания и использования, является очень гибким инструментом для передачи данных между приложениями (или даже компьютерами), а также подходит для сохранения и вывода различной информации."}
 },
 {0,
-{"Получить производительность компьютера",0,0,"","$CpuLogFile = 'C:\Log\LogCPU_' + (Get-Date -Format ""yyyy-MM-dd"") + '.txt'
+{"Получить производительность компьютера",0,0,"","$CpuLogFile = 'C:\Log\ProduceLog\ProduceLog_' + (Get-Date -Format ""yyyy-MM-dd"") + '.txt'
+$computer 	= ""LocalHost""
+$namespace 	= ""root\CIMV2""
+$Line = '**********'
+$Line2 = '__________'
 while (1) {
-    $DateTime = (Get-Date -Format ""dd.MM.yyyy HH:mm:ss"")
+	$DateTime = (Get-Date -Format ""dd.MM.yyyy HH:mm:ss"")
     $DateTime >> $CpuLogFile
     $DateTime
-    
+	
     $CpuLoadAverage = (Get-WmiObject win32_processor | Measure-Object -property LoadPercentage -Average | Select Average ).Average
     
     $ProcessorStats = Get-WmiObject win32_processor
     $ComputerCpu = $ProcessorStats.LoadPercentage
-    $ComputerCpu = ""{0:N2}"" -f $ComputerCpu
+	$ComputerCpu = ""{0:N2}"" -f $ComputerCpu
     # Lets create a re-usable WMI method for memory stats
     $OperatingSystem = Get-WmiObject win32_OperatingSystem
     # Lets grab the free memory
@@ -30686,15 +30744,18 @@ while (1) {
 
     # usedDiskSpaceDrives
     $usedDiskSpaceDrives = ''
-    $driveLetters = Get-WmiObject Win32_Volume | select DriveLetter
+	$driveLetters = Get-WmiObject Win32_Volume | select DriveLetter
     foreach ($driveLetter in $driveLetters)
     {
         $drive = Get-WmiObject Win32_Volume | where {$_.DriveLetter -eq $driveLetter.DriveLetter}
         
-        $usedDiskSpace = $drive.Capacity - $drive.FreeSpace
-        $usedDiskSpacePct = [math]::Round(($usedDiskSpace / $drive.Capacity) * 100,1)
-        $usedDiskSpacePct = ""{0:N2}"" -f $usedDiskSpacePct
-        $usedDiskSpaceDrives = $usedDiskSpaceDrives + $drive.Caption + '=' + $usedDiskSpacePct + '#'
+		if (-Not $drive.Capacity -eq 0)
+		{
+			$usedDiskSpace = $drive.Capacity - $drive.FreeSpace
+			$usedDiskSpacePct = [math]::Round(($usedDiskSpace / $drive.Capacity) * 100,1)
+			$usedDiskSpacePct = ""{0:N2}"" -f $usedDiskSpacePct
+			$usedDiskSpaceDrives = $usedDiskSpaceDrives + $drive.Caption + '=' + $usedDiskSpacePct + '#'
+		}
     }
 
     # Lets throw them into an object for outputting
@@ -30705,20 +30766,35 @@ while (1) {
     $objHostInfo | Add-Member -MemberType NoteProperty -Name MemoryUsedPercent -Value $PercentMemoryUsed
     $objHostInfo | Add-Member -MemberType NoteProperty -Name usedDiskSpaceDrives -Value $usedDiskSpaceDrives
 
-    $objHostInfoStr = 'ComputerCpu=' + $ComputerCpu + ';CpuLoadAverage=' + $CpuLoadAverage + ';PercentMemoryUsed=' + $PercentMemoryUsed + ';usedDiskSpaceDrives=' + $usedDiskSpaceDrives
+    $objHostInfoStr = 'ComputerCpu=' + $ComputerCpu + ';CpuLoadAverage=' + $CpuLoadAverage + ';PercentMemoryUsed=' + $PercentMemoryUsed + ';usedDiskSpaceDrives={' + $usedDiskSpaceDrives + '}'
     $objHostInfoStr >> $CpuLogFile
-    $objHostInfoStr
+	$objHostInfoStr
     # Lets dump our info into an array
     #$objHostInfo >> $CpuLogFile
 
     #'CPU LoadPercentage Average    ' + $CpuLoad >> $CpuLogFile
-    $Process = Get-Process | Sort-Object CPU -desc | Select-Object -first 5
-    $Process >> $CpuLogFile
-    $Process
-    
-    ''
-    
-    sleep 10
+	$Process = Get-Process | Sort-Object CPU -desc | Select-Object -first 5
+	$Process
+	$Process >> $CpuLogFile
+	
+	$Line2 >> $CpuLogFile
+	$Line2
+	
+	$TopMemoryUsage = get-wmiobject WIN32_PROCESS | Sort-Object -Property ws -Descending|select -first 10|Select processname, @{Name=""Mem Usage(MB)"";Expression={[math]::round($_.ws / 1mb)}},@{Name=""ProcessID"";Expression={[String]$_.ProcessID}},@{Name=""UserID"";Expression={$_.getowner().user}} | Format-Table
+	$TopMemoryUsage
+	$TopMemoryUsage >> $CpuLogFile
+	
+	$Line2 >> $CpuLogFile
+	$Line2
+	
+	$Tcpip_NI 	= Get-WmiObject -class Win32_PerfRawData_Tcpip_NetworkInterface -computername $computer -namespace $namespace | Select BytesReceivedPersec,BytesSentPersec,BytesTotalPersec | Format-Table
+	$Tcpip_NI 
+	$Tcpip_NI >> $CpuLogFile
+
+	$Line >> $CpuLogFile
+	$Line
+	
+	sleep 10
 }
 "}
 },
@@ -30750,6 +30826,35 @@ get-wmiobject WIN32_PROCESS | Sort-Object -Property ws -Descending|select -first
 ++
 get-process -computername $tag1 | Group-Object -Property ProcessName | Format-Table Name, @{n='Mem (KB)';e={'{0:N0}' -f (($_.Group|Measure-Object WorkingSet -Sum).Sum / 1KB)};a='right'} -AutoSize
 	
+"}
+},
+{0,
+{"Сетевая активность",0,0,"","$NetworkInterfaces = [System.Net.NetworkInformation.NetworkInterface]::GetAllNetworkInterfaces()
+$list = new-object 'System.Collections.Generic.List[System.Object]'
+foreach ($NetworkInterface in $NetworkInterfaces)
+{
+	
+	$NetworkInterfaceBytesSent = $NetworkInterface.GetIPv4Statistics().BytesSent
+	$NetworkInterfaceBytesReceived = $NetworkInterface.GetIPv4Statistics().BytesReceived
+	$NetworkInterfaceBytesTotal = $NetworkInterfaceBytesSent + $NetworkInterfaceBytesReceived
+	if (-Not $NetworkInterfaceBytesTotal -eq 0)
+	{
+		$objNetworkInterfaceInfo = New-Object System.Object
+	    $objNetworkInterfaceInfo | Add-Member -MemberType NoteProperty -Name Id -Value $NetworkInterface.Id
+		$objNetworkInterfaceInfo | Add-Member -MemberType NoteProperty -Name Name -Value $NetworkInterface.Name
+		$objNetworkInterfaceInfo | Add-Member -MemberType NoteProperty -Name NetworkInterfaceBytesSent -Value $NetworkInterfaceBytesSent
+		$objNetworkInterfaceInfo | Add-Member -MemberType NoteProperty -Name NetworkInterfaceBytesReceived -Value $NetworkInterfaceBytesReceived
+		$NetworkInterface.Id
+		$NetworkInterface.Name
+		$NetworkInterfaceBytesSent
+		$NetworkInterfaceBytesReceived
+		
+		$list.Add($objNetworkInterfaceInfo)
+		#$Mass = ,$objNetworkInterfaceInfo + $Mass
+	}
+}
+$list | ConvertTo-Json
+#$Mass | ConvertTo-Json
 "}
 },
 {0,
@@ -30787,7 +30892,7 @@ $stats
 $bytesSent
 $bytesReceived
 +
-[System.Net.NetworkInformation.NetworkInterface]::GetAllNetworkInterfaces() | ForEach-Object {$_.GetIPv4Statistics()}
+[System.Net.NetworkInformation.NetworkInterface]::GetAllNetworkInterfaces() | ForEach-Object {$_.Id $_.Name $_.GetIPv4Statistics()}
 
 Информация о устройстве
 PowerShell snippet to detect ethernet network speed in Windows
@@ -36898,22 +37003,18 @@ pravila-razrabotki-tipovyx-konfiguracij-chast2__012
 2) Потом устанавливаем точки останова и идем по шагам, т.е. выполняем обычную отладку.
 Теперь мы заранее видим какой код будет исполнен (и сколько раз). Это значительно ускоряет процесс отладки сложного, объемного кода."}
 },
+{2,
+{"АвтоТест",1,0,"",""},
 {0,
-{"Эмуляция регулярной ошибки",0,0,"","Если Секунда(ТекущаяДата()) % 2 = 0 Тогда
-	лЭмуляцияОшибки 	= 1 / 0;
+{"АвтоТест",0,0,"АвтоТест","Если Параметры.Свойство(""АвтоТест"") Тогда 
+	// Возврат при получении формы для анализа.
+	Возврат;
 КонецЕсли;"}
 },
 {0,
-{"Эмуляция регулярной ошибки в Попытке",0,0,"","Попытка
-	
-	Если Секунда(ТекущаяДата()) % 2 = 0 Тогда
-		лЭмуляцияОшибки 	= 1 / 0;
-	КонецЕсли;
-	
-Исключение
-	лСообщениеОшибки 	= ""Ошибка: "" + ОписаниеОшибки();
-	Сообщить(лСообщениеОшибки, СтатусСообщения.Важное);
-КонецПопытки; "}
+{"Получить форму с параметром АвтоТест",0,0,"","лАвтоТест 	= Новый Структура(""АвтоТест"", Истина);
+лФорма 		= ПолучитьФорму("""", лАвтоТест);"}
+}
 },
 {0,
 {"Пометка кнопки через цветовыделение (как начальная страница УНФ)",0,0,"","//При нажатии кпопулины будут становиться словно помеченными, но через цвет
