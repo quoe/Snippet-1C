@@ -15540,7 +15540,7 @@ https://flumi.ru/articles/show/programmnaia_rabota_s_rekvizitami_i_elementami_fo
 {"Открыть форму",0,0,"ПоказатьДок[умент]","<?""Имя документа"">.ПолучитьФорму().Открыть();"}
 }
 },
-{15,
+{16,
 {"Командная строка (CMD)",1,0,"",""},
 {0,
 {"Запуск обработки",0,0,"","// Запуск обработки из командной строки Windows (для запуска через службы Windows)
@@ -15734,7 +15734,9 @@ ObjScriptRun 		= ObjShell.Run(""Powershell.exe -windowstyle hidden -Executionpol
 @: Установка русской кодировки
 chcp 1251
 
+echo Упаковать в SFX по 50 мб
 For %%i In (%*) Do (
+	%%i
 	set FileName = %%~ni_p50m
 	""C:\Program Files\WinRAR\WinRAR.exe"" a %%~ni_p50m %%i -v50m -sfx
 )"}
@@ -17767,13 +17769,16 @@ For %%i In (%*) Do (
 )"}
 },
 {0,
-{"CMD кодировать/декодировать файл в base64 (через certutil)",0,0,"","Кодировать:
-certutil -encode raw.txt encoded.txt
+{"Шифрование кодировать/декодировать файл в base64 (через certutil)",0,0,"","Кодировать:
+certutil -encode data.txt data_encoded.txt
 или
-certutil -f -encode raw.txt encoded.txt
+certutil -f -encode data.txt data_encoded.txt
+The -f means ""force overwrite""
+или
+certutil -encode data.txt tmp.b64 && findstr /v /c:- tmp.b64 > data_encoded.b64
 
 Декодировать:
-certutil -decode encoded.txt raw.txt"}
+certutil -decode data_encoded.txt data.txt"}
 },
 {0,
 {"Текущая дата",0,0,"","set day=%DATE:~0,2%
@@ -17801,11 +17806,54 @@ echo %YYYYMMDD%"}
 if not exist ""C:\%curr_date%"" mkdir ""C:\%curr_date%"""}
 },
 {0,
-{"Шифрование Base64 (certutil)",0,0,"","certutil -encode data.txt tmp.b64 && findstr /v /c:- tmp.b64 > data_encoded.b64
-The -f means ""force overwrite""
+{"CMD Base64 (шифровать перетаскиванием)",0,0,"","Шифровать в Base64:
+@echo off
 
-certutil -decode data.b64 data.txt
-"}
+@: Установка русской кодировки
+chcp 1251
+
+echo Расшифровать из Base64
+For %%i In (%*) Do (
+	echo %%i
+	set FileName = %%~ni_encoded
+	certutil -f -encode %%i %%~ni_encoded.txt
+	echo %%~ni_encoded.txt
+)
+Pause
+
+Расшифровать из Base64:
+@echo off
+
+@: Установка русской кодировки
+chcp 1251
+
+echo Расшифровать из Base64
+For %%i In (%*) Do (
+	echo %%i
+	set FileName = %%~ni_encoded
+	certutil -f -decode %%i %%~ni_decoded.txt
+	echo %%~ni_decoded.txt
+)
+Pause"}
+},
+{0,
+{"Получение нужных частей из полного адреса к файлу",0,0,"","%~I         - expands %I removing any surrounding quotes ("")
+%~fI        - expands %I to a fully qualified path name
+%~dI        - expands %I to a drive letter only
+%~pI        - expands %I to a path only
+%~nI        - expands %I to a file name only
+%~xI        - expands %I to a file extension only
+%~sI        - expanded path contains short names only
+%~aI        - expands %I to file attributes of file
+%~tI        - expands %I to date/time of file
+%~zI        - expands %I to size of file
+
+The modifiers can be combined to get compound results:
+%~dpI       - expands %I to a drive letter and path only
+%~nxI       - expands %I to a file name and extension only
+%~fsI       - expands %I to a full path name with short names only
+
+Иногда может потребоваться два процента в названии: %%~nI"}
 }
 },
 {2,
