@@ -15540,7 +15540,7 @@ https://flumi.ru/articles/show/programmnaia_rabota_s_rekvizitami_i_elementami_fo
 {"Открыть форму",0,0,"ПоказатьДок[умент]","<?""Имя документа"">.ПолучитьФорму().Открыть();"}
 }
 },
-{14,
+{15,
 {"Командная строка (CMD)",1,0,"",""},
 {0,
 {"Запуск обработки",0,0,"","// Запуск обработки из командной строки Windows (для запуска через службы Windows)
@@ -17799,6 +17799,13 @@ echo %YYYYMMDD%"}
 {0,
 {"Создать папку с текущей датой, если её нет (mkdir)",0,0,"","set curr_date=%date:~6,4%%date:~3,2%%date:~0,2%
 if not exist ""C:\%curr_date%"" mkdir ""C:\%curr_date%"""}
+},
+{0,
+{"Шифрование Base64 (certutil)",0,0,"","certutil -encode data.txt tmp.b64 && findstr /v /c:- tmp.b64 > data_encoded.b64
+The -f means ""force overwrite""
+
+certutil -decode data.b64 data.txt
+"}
 }
 },
 {2,
@@ -30580,7 +30587,7 @@ Language 1C (BSL) 	- Поддержка языка 1С:Предприятие 8 
 OneScript Debug 	- Сервер отладки 1Script"}
 }
 },
-{9,
+{10,
 {"PowerShell",1,0,"",""},
 {0,
 {"Работа с JSON-объектами в Powershell",0,0,"","Работа с JSON-объектами в Powershell
@@ -30927,6 +30934,15 @@ ObjScriptRun 	= ObjShell.Run(""Powershell.exe -windowstyle hidden -Executionpoli
 Если Файл.Существует() Тогда
 	УдалитьФайлы(ПутьКФайлу);
 КонецЕсли;"}
+},
+{0,
+{"Шифрование Base64",0,0,"","doskey btoa=powershell ""[convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(\""$*\""))""
+doskey atob=powershell ""[Text.Encoding]::UTF8.GetString([convert]::FromBase64String(\""$*\""))""
+
+btoa Hello world!
+btoa This is fun.
+btoa wheeeeee!
+atob SGVsbG8gd29ybGQh"}
 },
 {0,
 {"Уведомление в область уведомлений",0,0,"","[void] [System.Reflection.Assembly]::LoadWithPartialName(""System.Windows.Forms"")
