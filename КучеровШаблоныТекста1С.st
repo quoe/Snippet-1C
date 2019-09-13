@@ -313,12 +313,12 @@
 },
 {0,
 {"Аннотации Расширения в 8.15 при &ИзменениеИКонтроль - Удаление",0,0,"№удал[ен]","#Удаление
-	<?>
+<?>
 #КонецУдаления"}
 },
 {0,
 {"Аннотации Расширения в 8.15 при &ИзменениеИКонтроль - Вставка",0,0,"№вст[авк]","#Вставка
-	<?>
+<?>
 #КонецВставки"}
 },
 {0,
@@ -1943,7 +1943,7 @@ RegExp.Pattern 		= Шаблон;
 "}
 }
 },
-{10,
+{11,
 {"СКД",1,0,"",""},
 {6,
 {"СКД отбор для таблицы",1,0,"",""},
@@ -3212,6 +3212,28 @@ http://catalog.mista.ru/public/97997/
         КонецЕсли;
     КонецЕсли;
 КонецПроцедуры"}
+},
+{0,
+{"Отбор (проверка существующего поля)",0,0,"","Сотрудники = Новый Массив;
+Для Каждого ЭлементОтбора Из НастройкиОтчета.Отбор.Элементы Цикл
+	
+	Если ТипЗнч(ЭлементОтбора) = Тип(""ЭлементОтбораКомпоновкиДанных"") Тогда
+		
+		Если ЭлементОтбора.ЛевоеЗначение = Новый ПолеКомпоновкиДанных(""Сотрудник"") Тогда
+			
+			Если ТипЗнч(ЭлементОтбора.ПравоеЗначение) = Тип(""СписокЗначений"") Тогда
+				Сотрудники = ЭлементОтбора.ПравоеЗначение.ВыгрузитьЗначения();
+			ИначеЕсли ЗначениеЗаполнено(ЭлементОтбора.ПравоеЗначение) Тогда
+				Сотрудники.Добавить(ЭлементОтбора.ПравоеЗначение);
+			КонецЕсли;
+			
+			Прервать;
+			
+		КонецЕсли;
+		
+	КонецЕсли;
+	
+КонецЦикла;"}
 }
 },
 {6,
@@ -16038,7 +16060,7 @@ https://flumi.ru/articles/show/programmnaia_rabota_s_rekvizitami_i_elementami_fo
 {"Открыть форму",0,0,"ПоказатьДок[умент]","<?""Имя документа"">.ПолучитьФорму().Открыть();"}
 }
 },
-{17,
+{15,
 {"Командная строка (CMD)",1,0,"",""},
 {2,
 {"GIT",1,0,"",""},
@@ -16103,6 +16125,8 @@ $ git commit -m ""Краткое описание"" <имя_файла>
 Должно быть кратким (не более 50-ти символов)"}
 }
 },
+{4,
+{"1С",1,0,"",""},
 {0,
 {"Запуск обработки",0,0,"","// Запуск обработки из командной строки Windows (для запуска через службы Windows)
 
@@ -16189,6 +16213,54 @@ If Res <> 0 Then
   WScript.Echo ""Код ошибки: "" & Res
   WScript.Quit
 End If   "}
+}
+},
+{4,
+{"nircmd.exe (этот файл должен лежать в папке с запускаемым кодом)",1,0,"",""},
+{0,
+{"Клик мышью 1",0,0,"","@echo off
+nircmd setcursor 390 390
+nircmd wait 100
+:loop
+nircmd sendmouse left click
+nircmd wait 500
+goto loop"}
+},
+{0,
+{"Клик мышью 2",0,0,"","@echo off
+nircmd setcursor 390 390
+nircmd wait 100
+:loop
+Nircmdc sendkeypress Home
+nircmd wait 10000
+:loop
+Nircmdc sendkeypress Up
+nircmd wait 500
+:loop
+Nircmdc sendkeypress Down
+nircmd wait 500
+:loop
+nircmd sendmouse left click
+nircmd wait 100
+goto loop"}
+},
+{0,
+{"Скриншёт периодически",0,0,"","@echo off
+
+set curr_date=%date:~6,4%%date:~3,2%%date:~0,2%
+if not exist ""C:\Users\Admin\Pictures\OfficeScreen\%curr_date%"" mkdir ""C:\Users\Admin\Pictures\OfficeScreen\%curr_date%""
+
+nircmd.exe loop 1000000 60000 savescreenshot C:\Users\Admin\Pictures\OfficeScreen\~$currdate.yyyyMMdd$\scr~$currdate.MM_dd_yyyy$-~$currtime.HH_mm_ss$.png"}
+},
+{0,
+{"Скриншёт браузера периодически",0,0,"","@echo off
+
+set curr_date=%date:~6,4%%date:~3,2%%date:~0,2%
+if not exist ""C:\Users\Admin\Pictures\OfficeScreen\%curr_date%"" mkdir ""C:\Users\Admin\Pictures\OfficeScreen\%curr_date%""
+
+""C:\Program Files\Mozilla Firefox\firefox.exe"" ""https://saferegion.net/cams/iframe/us7soT4P/f32d01027144cc656fdbd6771c583d48/hls/""
+nircmd.exe loop 1000000 60000 savescreenshot C:\Users\Admin\Pictures\OfficeScreen\~$currdate.yyyyMMdd$\scr~$currdate.MM_dd_yyyy$-~$currtime.HH_mm_ss$.png"}
+}
 },
 {0,
 {"Запустить скрипт CMD",0,0,"","ObjShell 			= Новый COMОбъект(""WScript.Shell"") ;
@@ -43102,7 +43174,7 @@ pravila-razrabotki-tipovyx-konfiguracij-chast2__012
 КонецПроцедуры"}
 },
 {0,
-{"УПД  / Счет-фактура (Номер ддокумента)",0,0,"","НомерСф 		= """";
+{"УПД  / Счет-фактура (Номер документа)",0,0,"","НомерСф 		= """";
 ПервыйПроход 	= Истина;
 для Каждого СТрокаТЧ из ДанныеПечати.Ссылка.ДокументыОснования Цикл
 	
